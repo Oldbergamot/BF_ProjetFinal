@@ -35,5 +35,6 @@ public class Author {
     private boolean display;
 
     @ManyToMany
+    @Getter @Setter
     private List<Genre> genres;
 }

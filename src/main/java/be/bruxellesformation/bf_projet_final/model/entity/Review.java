@@ -35,6 +35,7 @@ public class Review {
     private boolean display = false;
 
     @ManyToOne
+    @Getter @Setter
     private Book isAbout;
 
 }

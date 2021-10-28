@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "SECURITYUSER")
 @EqualsAndHashCode
 @ToString
 public class User {
@@ -36,21 +36,27 @@ public class User {
     private boolean display;
 
     @ManyToMany
+    @Getter @Setter
     private List<Book>wishToRead;
 
     @ManyToMany
+    @Getter @Setter
     private List<Book>hasRead;
 
     @ManyToMany
+    @Getter @Setter
     private List<Language> prefLang;
 
     @ManyToMany
+    @Getter @Setter
     private List<Publisher> prefPub;
 
     @ManyToMany
+    @Getter @Setter
     private List<Genre> prefGenre;
 
     @ManyToMany
+    @Getter @Setter
     private List<Author> prefAuthor;
 
 
