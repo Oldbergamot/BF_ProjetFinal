@@ -1,0 +1,14 @@
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/BF_Projet_Final
+    username: postgres
+    password: YFGwY8Jz33Azdz
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties :
+      hibernate :
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
