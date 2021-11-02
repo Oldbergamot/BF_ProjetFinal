@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import java.util.List;
 @Table(name = "BOOK")
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 public class Book {
 
     @Id
@@ -53,4 +51,13 @@ public class Book {
     @ManyToOne
     @Getter @Setter
     private Language language;
+
+    public Book(String name, LocalDate publishedDate, List<Author> authors, Publisher publisher, Genre genre, Language language) {
+        this.name = name;
+        this.publishedDate = publishedDate;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.language = language;
+    }
 }

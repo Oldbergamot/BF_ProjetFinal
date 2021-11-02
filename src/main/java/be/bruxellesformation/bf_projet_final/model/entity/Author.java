@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Table(name = "AUTHOR")
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class Author {
 
     @Id
@@ -37,4 +35,10 @@ public class Author {
     @ManyToMany
     @Getter @Setter
     private List<Genre> genres;
+
+    public Author(String firstName, String lastName, List<Genre> genres) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.genres = genres;
+    }
 }

@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @ToString
 @EqualsAndHashCode
 @Table(name = "LANGUAGE")
+@NoArgsConstructor
 public class Language {
 
     @Id
@@ -24,5 +22,9 @@ public class Language {
 
     @Getter @Setter
     @Column(nullable = false)
-    private boolean display;
+    private boolean display = false;
+
+    public Language(String name) {
+        this.name = name;
+    }
 }

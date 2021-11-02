@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Table(name = "SECURITYUSER")
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -59,5 +57,15 @@ public class User {
     @Getter @Setter
     private List<Author> prefAuthor;
 
-
+    public User(String username, String email, String password, List<Book> wishToRead, List<Book> hasRead, List<Language> prefLang, List<Publisher> prefPub, List<Genre> prefGenre, List<Author> prefAuthor) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.wishToRead = wishToRead;
+        this.hasRead = hasRead;
+        this.prefLang = prefLang;
+        this.prefPub = prefPub;
+        this.prefGenre = prefGenre;
+        this.prefAuthor = prefAuthor;
+    }
 }

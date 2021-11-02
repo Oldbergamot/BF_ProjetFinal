@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Table(name = "PUBLISHER")
+@NoArgsConstructor
 public class Publisher {
 
     @Id
@@ -25,4 +23,8 @@ public class Publisher {
     @Getter @Setter
     @Column(nullable = false)
     private boolean display = false;
+
+    public Publisher(String name) {
+        this.name = name;
+    }
 }
