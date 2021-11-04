@@ -10,6 +10,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Table(name = "GENRE")
 @NoArgsConstructor
+@Builder
 public class Genre {
 
     @Id

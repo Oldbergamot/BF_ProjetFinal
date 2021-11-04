@@ -10,6 +10,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
+@Builder
 public class User {
 
     @Id

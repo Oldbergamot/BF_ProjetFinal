@@ -1,9 +1,8 @@
 package be.bruxellesformation.bf_projet_final.util;
 
-import be.bruxellesformation.bf_projet_final.model.dto.PublisherDTO;
+
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import be.bruxellesformation.bf_projet_final.repository.*;
-import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -45,6 +44,7 @@ public class DataFiller implements InitializingBean {
           new Genre("policier"),
           new Genre("sci-fi")
         );
+        genreRepository.saveAll(genreToInsert);
 
         // Publisher
 
@@ -54,6 +54,7 @@ public class DataFiller implements InitializingBean {
                 new Publisher("harper collins"),
                 new Publisher("dupuis")
         );
+        publisherRepository.saveAll(publisherToInsert);
 
         // Language
 
@@ -62,6 +63,7 @@ public class DataFiller implements InitializingBean {
           new Language("english"),
           new Language("klingon")
         );
+        languageRepository.saveAll(languageToInsert);
 
         // Author
 
@@ -78,6 +80,7 @@ public class DataFiller implements InitializingBean {
             new Author("Patrick", "Sebastien", genre3),
             new Author("Lao", "tseu", genre4)
         );
+        authorRepository.saveAll(authorToInsert);
 
         // User
 
@@ -101,6 +104,7 @@ public class DataFiller implements InitializingBean {
                   List.of(genreToInsert.get(1)),
                   List.of(authorToInsert.get(1)))
         );
+        userRepository.saveAll(userToInsert);
 
         // Book
 
@@ -124,6 +128,13 @@ public class DataFiller implements InitializingBean {
                   genreToInsert.get(2),
                   languageToInsert.get(2))
         );
+        bookRepository.saveAll(bookToInsert);
 
+        List<Review>reviewToInsert = List.of(new Review((short) 4,
+                "Very good, would recommend",
+                LocalDate.now(),
+                bookToInsert.get(0)));
+
+        reviewReposiroty.saveAll(reviewToInsert);
     }
 }

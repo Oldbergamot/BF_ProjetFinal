@@ -1,9 +1,6 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @Table(name = "Review")
+@NoArgsConstructor
 public class Review {
 
     @Id
@@ -21,7 +19,7 @@ public class Review {
 
     @Getter @Setter
     @Column(nullable = false)
-    private byte note;
+    private short note;
 
     @Column(nullable = false)
     @Getter @Setter
@@ -38,4 +36,10 @@ public class Review {
     @Getter @Setter
     private Book isAbout;
 
+    public Review(short note, String content, LocalDate publishedDate, Book isAbout) {
+        this.note = note;
+        this.content = content;
+        this.publishedDate = publishedDate;
+        this.isAbout = isAbout;
+    }
 }

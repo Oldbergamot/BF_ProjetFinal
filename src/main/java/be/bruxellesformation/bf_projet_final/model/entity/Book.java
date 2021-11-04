@@ -11,6 +11,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
+@Builder
 public class Book {
 
     @Id
