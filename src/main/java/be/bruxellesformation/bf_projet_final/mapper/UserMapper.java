@@ -4,6 +4,7 @@ import be.bruxellesformation.bf_projet_final.model.dto.UserDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.User;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserRegisterForm;
+import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,6 +58,15 @@ public class UserMapper{
         user.setPrefPub(form.getPrefPub());
         user.setPrefLang(form.getPrefLang());
 
+        return user;
+    }
+
+    public User fromUserUpdateFormToEntity(UserUpdateForm form) {
+        if(form ==  null) return null;
+        User user = new User();
+        user.setUsername(form.getUsername());
+        user.setPassword(form.getPassword());
+        user.setEmail(form.getEmail());
         return user;
     }
 }

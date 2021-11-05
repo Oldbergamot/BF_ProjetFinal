@@ -3,6 +3,7 @@ package be.bruxellesformation.bf_projet_final.mapper;
 import be.bruxellesformation.bf_projet_final.model.dto.GenreDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Genre;
 import be.bruxellesformation.bf_projet_final.model.form.genre.AddGenreForm;
+import be.bruxellesformation.bf_projet_final.model.form.genre.ModifyGenreForm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +30,12 @@ public class GenreMapper {
        Genre genre = new Genre();
        genre.setName(form.getName());
        return genre;
+    }
+
+    public Genre fromModifyGenreFormToEntity(ModifyGenreForm form) {
+        if(form == null) return null;
+        Genre genre = new Genre();
+        genre.setName(form.getName());
+        return genre;
     }
 }

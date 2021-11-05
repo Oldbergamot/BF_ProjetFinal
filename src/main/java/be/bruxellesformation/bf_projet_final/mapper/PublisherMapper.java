@@ -3,6 +3,7 @@ package be.bruxellesformation.bf_projet_final.mapper;
 import be.bruxellesformation.bf_projet_final.model.dto.PublisherDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Publisher;
 import be.bruxellesformation.bf_projet_final.model.form.Publisher.AddPublisherForm;
+import be.bruxellesformation.bf_projet_final.model.form.Publisher.ModifyPublisherForm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,13 @@ public class PublisherMapper {
     }
 
     public Publisher formAdPublisherFormToEntity(AddPublisherForm form) {
+        if (form == null) return null;
+        Publisher publisher = new Publisher();
+        publisher.setName(form.getName());
+        return publisher;
+    }
+
+    public Publisher formModifyPublisherFormToEntity(ModifyPublisherForm form) {
         if (form == null) return null;
         Publisher publisher = new Publisher();
         publisher.setName(form.getName());

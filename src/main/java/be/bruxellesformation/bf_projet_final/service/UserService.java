@@ -9,7 +9,7 @@ import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService{
 
     UserDTO insert(UserRegisterForm form);
     UserDTO getOne(Long id);
