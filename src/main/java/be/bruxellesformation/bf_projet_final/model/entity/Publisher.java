@@ -9,6 +9,8 @@ import javax.persistence.*;
 @ToString
 @Table(name = "PUBLISHER")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Publisher {
 
     @Id

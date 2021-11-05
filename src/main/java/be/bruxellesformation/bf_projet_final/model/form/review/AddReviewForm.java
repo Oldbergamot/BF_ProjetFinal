@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class addReviewForm {
+public class AddReviewForm {
 
     private byte note;
     private String content;

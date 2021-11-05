@@ -26,6 +26,8 @@ public class GenreMapper {
 
     public Genre fromAddGenreFormToEntity(AddGenreForm form) {
        if (form == null)return null;
-       return Genre.builder().name(form.getName()).build();
+       Genre genre = new Genre();
+       genre.setName(form.getName());
+       return genre;
     }
 }

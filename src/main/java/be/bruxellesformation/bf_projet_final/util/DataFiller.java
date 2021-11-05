@@ -35,20 +35,25 @@ public class DataFiller implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        if (userRepository.getAll().size() > 0) {
+            log.info("No insert data is required");
+            return;
+        }
+
         log.info("hydratation de la DB");
 
         // Genre
 
         List<Genre> genreToInsert = List.of(
-          new Genre("fantastique"),
-          new Genre("policier"),
-          new Genre("sci-fi")
+                new Genre("fantastique"),
+                new Genre("policier"),
+                new Genre("sci-fi")
         );
         genreRepository.saveAll(genreToInsert);
 
         // Publisher
 
-        List<Publisher>publisherToInsert = List.of(
+        List<Publisher> publisherToInsert = List.of(
                 new Publisher("pinguin"),
                 new Publisher("fleuve noir"),
                 new Publisher("harper collins"),
@@ -58,83 +63,86 @@ public class DataFiller implements InitializingBean {
 
         // Language
 
-        List<Language>languageToInsert = List.of(
-          new Language("french"),
-          new Language("english"),
-          new Language("klingon")
+        List<Language> languageToInsert = List.of(
+                new Language("french"),
+                new Language("english"),
+                new Language("klingon")
         );
         languageRepository.saveAll(languageToInsert);
 
         // Author
 
-        List<Genre>genre1 = List.of(genreToInsert.get(0),
+        List<Genre> genre1 = List.of(genreToInsert.get(0),
                 genreToInsert.get(1));
-        List<Genre>genre2 = List.of(genreToInsert.get(1),
+        List<Genre> genre2 = List.of(genreToInsert.get(1),
                 genreToInsert.get(2));
-        List<Genre>genre3 = List.of(genreToInsert.get(0));
-        List<Genre>genre4 = List.of(genreToInsert.get(2));
+        List<Genre> genre3 = List.of(genreToInsert.get(0));
+        List<Genre> genre4 = List.of(genreToInsert.get(2));
 
-        List<Author>authorToInsert = List.of(
-            new Author("Jean-Luc", "Picard",genre1 ),
-            new Author("Ghengis", "Khan", genre2) ,
-            new Author("Patrick", "Sebastien", genre3),
-            new Author("Lao", "tseu", genre4)
+        List<Author> authorToInsert = List.of(
+                new Author("Jean-Luc", "Picard", genre1),
+                new Author("Ghengis", "Khan", genre2),
+                new Author("Patrick", "Sebastien", genre3),
+                new Author("Lao", "tseu", genre4)
         );
         authorRepository.saveAll(authorToInsert);
 
         // User
 
         List<User> userToInsert = List.of(
-          new User("LeGrandMalfaisant",
-                  "LeGrandMalfaisant@hotmail.com",
-                  "tufaisletype",
-                  null,
-                  null,
-                  List.of(new Language("french")),
-                  List.of(new Publisher("dupuis")),
-                  List.of(genreToInsert.get(0)),
-                  List.of(authorToInsert.get(0))),
-          new User("Marc",
-                  "plop@gmail.com",
-                  "password",
-                  null,
-                  null,
-                  List.of(languageToInsert.get(0)),
-                  List.of(publisherToInsert.get(0)),
-                  List.of(genreToInsert.get(1)),
-                  List.of(authorToInsert.get(1)))
+                new User("LeGrandMalfaisant",
+                        "LeGrandMalfaisant@hotmail.com",
+                        "tufaisletype",
+                        null,
+                        null,
+                        List.of(languageToInsert.get(0)),
+                        List.of(publisherToInsert.get(1)),
+                        List.of(genreToInsert.get(0)),
+                        List.of(authorToInsert.get(0))
+                ),
+                new User("Marc",
+                        "plop@gmail.com",
+                        "password",
+                        null,
+                        null,
+                        List.of(languageToInsert.get(0)),
+                        List.of(publisherToInsert.get(0)),
+                        List.of(genreToInsert.get(1)),
+                        List.of(authorToInsert.get(1))
+                )
         );
         userRepository.saveAll(userToInsert);
 
         // Book
 
-        List<Book>bookToInsert = List.of(
-          new Book("L'art de la glande",
-                  LocalDate.now(),
-                  List.of(authorToInsert.get(0)),
-                  publisherToInsert.get(0),
-                  genreToInsert.get(0),
-                  languageToInsert.get(0)),
-          new Book("L'art de bosser",
-                  LocalDate.now(),
-                  List.of(authorToInsert.get(1)),
-                  publisherToInsert.get(0),
-                  genreToInsert.get(1),
-                  languageToInsert.get(1)),
-          new Book("L'art de l'entre deux",
-                  LocalDate.now(),
-                  List.of(authorToInsert.get(2)),
-                  publisherToInsert.get(1),
-                  genreToInsert.get(2),
-                  languageToInsert.get(2))
+        List<Book> bookToInsert = List.of(
+                new Book("L'art de la glande",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(0)),
+                        publisherToInsert.get(0),
+                        genreToInsert.get(0),
+                        languageToInsert.get(0)),
+                new Book("L'art de bosser",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(1)),
+                        publisherToInsert.get(0),
+                        genreToInsert.get(1),
+                        languageToInsert.get(1)),
+                new Book("L'art de l'entre deux",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(2)),
+                        publisherToInsert.get(1),
+                        genreToInsert.get(2),
+                        languageToInsert.get(2))
         );
         bookRepository.saveAll(bookToInsert);
 
-        List<Review>reviewToInsert = List.of(new Review((short) 4,
+        List<Review> reviewToInsert = List.of(new Review((short) 4,
                 "Very good, would recommend",
                 LocalDate.now(),
                 bookToInsert.get(0)));
 
         reviewReposiroty.saveAll(reviewToInsert);
+
     }
 }

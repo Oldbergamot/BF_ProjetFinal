@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Table(name = "Review")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Review {
 
     @Id

@@ -12,6 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Book {
 
     @Id
@@ -37,7 +38,7 @@ public class Book {
     @ManyToMany(targetEntity = Author.class)
     private List<Author> authors;
 
-    @ManyToOne
+    @ManyToOne()
     @Getter @Setter
     private Publisher publisher;
 
@@ -45,11 +46,11 @@ public class Book {
     @Getter @Setter
     private List<Review> reviews;
 
-    @ManyToOne
+    @ManyToOne()
     @Getter @Setter
     private Genre genre;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Language.class)
     @Getter @Setter
     private Language language;
 

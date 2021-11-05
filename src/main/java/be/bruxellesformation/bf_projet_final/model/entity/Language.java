@@ -9,6 +9,8 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Table(name = "LANGUAGE")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Language {
 
     @Id
@@ -27,4 +29,6 @@ public class Language {
     public Language(String name) {
         this.name = name;
     }
+
+
 }

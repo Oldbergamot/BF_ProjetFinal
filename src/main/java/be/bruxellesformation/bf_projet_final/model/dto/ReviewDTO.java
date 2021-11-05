@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class reviewDTO {
+public class ReviewDTO {
 
     private Long id;
-    private byte note;
+    private short note;
     private String content;
     private LocalDate publishedDate;
     private Book isAbout;
