@@ -3,10 +3,10 @@ package be.bruxellesformation.bf_projet_final.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @ToString
-@EqualsAndHashCode
 @Table(name = "LANGUAGE")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,5 +30,16 @@ public class Language {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Language)) return false;
+        Language language = (Language) o;
+        return display == language.display && Objects.equals(id, language.id) && Objects.equals(name, language.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, display);
+    }
 }

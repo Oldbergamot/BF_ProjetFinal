@@ -5,11 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "BOOK")
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
@@ -61,5 +61,18 @@ public class Book {
         this.publisher = publisher;
         this.genre = genre;
         this.language = language;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return display == book.display && Objects.equals(id, book.id) && Objects.equals(name, book.name) && Objects.equals(publishedDate, book.publishedDate) && Objects.equals(summary, book.summary) && Objects.equals(authors, book.authors) && Objects.equals(publisher, book.publisher) && Objects.equals(reviews, book.reviews) && Objects.equals(genre, book.genre) && Objects.equals(language, book.language);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, publishedDate, summary, display, authors, publisher, reviews, genre, language);
     }
 }

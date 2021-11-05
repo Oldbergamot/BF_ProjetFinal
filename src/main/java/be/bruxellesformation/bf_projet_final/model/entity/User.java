@@ -4,10 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "SECURITYUSER")
-@EqualsAndHashCode
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -69,5 +69,18 @@ public class User {
         this.prefPub = prefPub;
         this.prefGenre = prefGenre;
         this.prefAuthor = prefAuthor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return display == user.display && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(wishToRead, user.wishToRead) && Objects.equals(hasRead, user.hasRead) && Objects.equals(prefLang, user.prefLang) && Objects.equals(prefPub, user.prefPub) && Objects.equals(prefGenre, user.prefGenre) && Objects.equals(prefAuthor, user.prefAuthor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, password, display, wishToRead, hasRead, prefLang, prefPub, prefGenre, prefAuthor);
     }
 }

@@ -4,10 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "AUTHOR")
-@EqualsAndHashCode
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,5 +42,18 @@ public class Author {
         this.firstName = firstName;
         this.lastName = lastName;
         this.genres = genres;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author)) return false;
+        Author author = (Author) o;
+        return display == author.display && Objects.equals(id, author.id) && Objects.equals(firstName, author.firstName) && Objects.equals(lastName, author.lastName) && Objects.equals(biography, author.biography) && Objects.equals(genres, author.genres);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, biography, display, genres);
     }
 }

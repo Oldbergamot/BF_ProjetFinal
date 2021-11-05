@@ -3,9 +3,9 @@ package be.bruxellesformation.bf_projet_final.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@EqualsAndHashCode
 @ToString
 @Table(name = "PUBLISHER")
 @NoArgsConstructor
@@ -28,5 +28,18 @@ public class Publisher {
 
     public Publisher(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Publisher)) return false;
+        Publisher publisher = (Publisher) o;
+        return display == publisher.display && Objects.equals(id, publisher.id) && Objects.equals(name, publisher.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, display);
     }
 }
