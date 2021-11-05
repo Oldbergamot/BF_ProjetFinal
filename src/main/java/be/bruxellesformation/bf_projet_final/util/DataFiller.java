@@ -35,7 +35,7 @@ public class DataFiller implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (userRepository.getAll().size() > 0) {
+        if (userRepository.findAll().size() > 0) {
             log.info("No insert data is required");
             return;
         }
