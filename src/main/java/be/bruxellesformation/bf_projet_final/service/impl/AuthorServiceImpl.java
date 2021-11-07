@@ -8,7 +8,11 @@ import be.bruxellesformation.bf_projet_final.model.form.author.AddAuthorForm;
 import be.bruxellesformation.bf_projet_final.model.form.author.ModifyAuthorForm;
 import be.bruxellesformation.bf_projet_final.repository.AuthorRepository;
 import be.bruxellesformation.bf_projet_final.service.AuthorService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -51,5 +55,20 @@ public class AuthorServiceImpl implements AuthorService {
         a.setDisplay(b);
         repository.save(a);
         return mapper.toDto(a);
+    }
+
+    @Override
+    public List<AuthorDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<AuthorDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public AuthorDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

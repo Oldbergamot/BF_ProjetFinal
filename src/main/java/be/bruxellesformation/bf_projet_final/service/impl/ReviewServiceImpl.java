@@ -8,9 +8,12 @@ import be.bruxellesformation.bf_projet_final.model.form.review.AddReviewForm;
 import be.bruxellesformation.bf_projet_final.model.form.review.ModifyReviewForm;
 import be.bruxellesformation.bf_projet_final.repository.ReviewReposiroty;
 import be.bruxellesformation.bf_projet_final.service.ReviewService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -57,5 +60,20 @@ public class ReviewServiceImpl implements ReviewService {
         r.setDisplay(b);
         repository.save(r);
         return mapper.toDto(r);
+    }
+
+    @Override
+    public List<ReviewDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<ReviewDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public ReviewDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

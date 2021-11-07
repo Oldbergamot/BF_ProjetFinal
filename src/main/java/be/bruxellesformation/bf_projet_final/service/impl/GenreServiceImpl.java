@@ -8,7 +8,11 @@ import be.bruxellesformation.bf_projet_final.model.form.genre.AddGenreForm;
 import be.bruxellesformation.bf_projet_final.model.form.genre.ModifyGenreForm;
 import be.bruxellesformation.bf_projet_final.repository.GenreRepository;
 import be.bruxellesformation.bf_projet_final.service.GenreService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -48,5 +52,20 @@ public class GenreServiceImpl implements GenreService {
         g.setDisplay(b);
         repository.save(g);
         return mapper.toDto(g);
+    }
+
+    @Override
+    public List<GenreDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<GenreDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public GenreDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

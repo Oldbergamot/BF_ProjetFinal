@@ -13,10 +13,12 @@ import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import be.bruxellesformation.bf_projet_final.repository.BookRepository;
 import be.bruxellesformation.bf_projet_final.repository.UserRepository;
 import be.bruxellesformation.bf_projet_final.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -200,5 +202,15 @@ public class UserServiceImpl implements UserService {
             if(temp.size() != 0) books.addAll(temp);
         }
         return bookMapper.fromListEntityToDto(books);
+    }
+
+    @Override
+    public Page<UserDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public UserDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

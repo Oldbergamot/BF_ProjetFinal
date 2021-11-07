@@ -8,7 +8,11 @@ import be.bruxellesformation.bf_projet_final.model.form.Publisher.AddPublisherFo
 import be.bruxellesformation.bf_projet_final.model.form.Publisher.ModifyPublisherForm;
 import be.bruxellesformation.bf_projet_final.repository.PublisherRepository;
 import be.bruxellesformation.bf_projet_final.service.PublisherService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PublisherServiceImpl implements PublisherService {
@@ -48,5 +52,20 @@ public class PublisherServiceImpl implements PublisherService {
         p.setDisplay(b);
         repository.save(p);
         return mapper.toDto(p);
+    }
+
+    @Override
+    public List<PublisherDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<PublisherDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public PublisherDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

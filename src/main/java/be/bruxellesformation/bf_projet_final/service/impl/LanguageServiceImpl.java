@@ -8,7 +8,11 @@ import be.bruxellesformation.bf_projet_final.model.form.Language.AddLanguageForm
 import be.bruxellesformation.bf_projet_final.model.form.Language.ModifyLanguageForm;
 import be.bruxellesformation.bf_projet_final.repository.LanguageRepository;
 import be.bruxellesformation.bf_projet_final.service.LanguageService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class LanguageServiceImpl implements LanguageService {
@@ -48,5 +52,20 @@ public class LanguageServiceImpl implements LanguageService {
         l.setDisplay(b);
         repository.save(l);
         return mapper.toDto(l);
+    }
+
+    @Override
+    public List<LanguageDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<LanguageDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public LanguageDTO partialUpdate(Long id, Map<String, Object> values) {
+        return null;
     }
 }

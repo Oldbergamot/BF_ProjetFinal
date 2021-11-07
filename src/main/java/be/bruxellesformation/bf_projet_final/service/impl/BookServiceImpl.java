@@ -5,9 +5,11 @@ import be.bruxellesformation.bf_projet_final.model.dto.ReviewDTO;
 import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
 import be.bruxellesformation.bf_projet_final.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -63,6 +65,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDTO displayBook(Long id, boolean b) {
+        return null;
+    }
+
+    @Override
+    public List<BookDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public Page<BookDTO> getAllWithPagination(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public BookDTO partialUpdate(Long id, Map<String, Object> values) {
         return null;
     }
 }
