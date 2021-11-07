@@ -30,6 +30,12 @@ public interface UserService{
     List<BookDTO> getRecommandationOnPublisher(Long id);
     List<BookDTO> getRecommandationOnLanguage(Long id);
 
+
     Page<UserDTO> getAllWithPagination(int page, int size);
+    List<BookDTO> getGlobalRecommandationWithPagination(Long id);
+    List<BookDTO> getRecommandationOnGenreWithPagination(Long id);
+    List<BookDTO> getRecommandationOnAuthorWithPaginationr(Long id);
+    List<BookDTO> getRecommandationOnPublisherWithPagination(Long id);
+    List<BookDTO> getRecommandationOnLanguageWithPagination(Long id);
     UserDTO partialUpdate(Long id, Map<String, Object> values);
 }

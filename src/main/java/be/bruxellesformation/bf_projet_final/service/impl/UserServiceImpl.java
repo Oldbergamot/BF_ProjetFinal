@@ -210,6 +210,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<BookDTO> getGlobalRecommandationWithPagination(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<BookDTO> getRecommandationOnGenreWithPagination(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<BookDTO> getRecommandationOnAuthorWithPaginationr(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<BookDTO> getRecommandationOnPublisherWithPagination(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<BookDTO> getRecommandationOnLanguageWithPagination(Long id) {
+        return null;
+    }
+
+    @Override
     public UserDTO partialUpdate(Long id, Map<String, Object> values) {
         return null;
     }
