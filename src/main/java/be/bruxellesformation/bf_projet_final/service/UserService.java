@@ -17,8 +17,13 @@ public interface UserService{
     UserDTO updateOne(Long id, UserUpdateForm form);
     UserDTO deleteOne(Long id);
     UserDTO updatePref(Long id, UserAddPrefForm form);
-    UserDTO updateWishToRead(Long idUser, Long idBook);
-    UserDTO updateHasRead(Long idUser, Long idBook);
-    UserDTO removeFromList(Long idUser, Long idBook);
-    List<BookDTO> getRecommandation(Long id);
+    UserDTO addToWishToRead(Long idUser, Long idBook);
+    UserDTO addToHasRead(Long idUser, Long idBook);
+    UserDTO removeFromWishToRead(Long idUser, Long idBook);
+    UserDTO removeFromHasRead(Long idUser, Long idBook);
+    List<BookDTO> getGlobalRecommandation(Long id);
+    List<BookDTO> getRecommandationOnGenre(Long id);
+    List<BookDTO> getRecommandationOnAuthor(Long id);
+    List<BookDTO> getRecommandationOnPublisher(Long id);
+    List<BookDTO> getRecommandationOnLanguage(Long id);
 }

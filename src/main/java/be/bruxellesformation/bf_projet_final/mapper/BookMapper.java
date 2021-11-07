@@ -6,6 +6,9 @@ import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class BookMapper {
 
@@ -57,6 +60,14 @@ public class BookMapper {
                 .language(form.getLanguage())
                 .genre(form.getGenre())
                 .build();
+    }
+
+    public List<BookDTO> fromListEntityToDto(List<Book> list) {
+        List<BookDTO> results = new ArrayList<>();
+        for(Book b : list) {
+            results.add(toDto(b));
+        }
+        return results;
     }
 
 
