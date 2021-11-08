@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
                 .map(Genre::getId)
                 .collect(Collectors.toList());
         if(genresId.size()==0) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findBooksByGenreId(genresId);
+        List<Book> results = bookRepository.findBooksByGenreIdIn(genresId);
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
                 .map(Author::getId)
                 .collect(Collectors.toList());
         if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findBooksByAuthors(authorsId);
+        List<Book> results = bookRepository.findBooksByAuthorsIn(authorsId);
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
                 .map(Genre::getId)
                 .collect(Collectors.toList());
         if(publisherId.size()==0) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findBooksByPublisherId(publisherId);
+        List<Book> results = bookRepository.findBooksByPublisherIdIn(publisherId);
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
                 .map(Genre::getId)
                 .collect(Collectors.toList());
         if(languagesId.size()==0) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findBooksByLanguageId(languagesId);
+        List<Book> results = bookRepository.findBooksByLanguageIdIn(languagesId);
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -221,7 +221,7 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(Language::getId)
                 .collect(Collectors.toList());
-        List<Book>results = bookRepository.findAllByGenreIdOrLanguageIdOrPublisherId(genresId,languagesId,publishersId, PageRequest.of(page, size));
+        List<Book>results = bookRepository.findAllByGenreIdInOrLanguageIdInOrPublisherIdIn(genresId,languagesId,publishersId, PageRequest.of(page, size));
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService {
                 .map(Genre::getId)
                 .collect(Collectors.toList());
         if(genresId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findAllByGenreId(genresId,PageRequest.of(page, size) );
+        List<Book> results = bookRepository.findAllByGenreIdIn(genresId,PageRequest.of(page, size) );
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -245,7 +245,7 @@ public class UserServiceImpl implements UserService {
                 .map(Author::getId)
                 .collect(Collectors.toList());
         if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> books = bookRepository.findBooksByAuthors(authorsId, PageRequest.of(page, size));
+        List<Book> books = bookRepository.findBooksByAuthorsIn(authorsId, PageRequest.of(page, size));
         return bookMapper.fromListEntityToDto(books);
     }
 
@@ -257,7 +257,7 @@ public class UserServiceImpl implements UserService {
                 .map(Genre::getId)
                 .collect(Collectors.toList());
         if(publishersId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findAllByPublisherId(publishersId,PageRequest.of(page, size));
+        List<Book> results = bookRepository.findAllByPublisherIdIn(publishersId,PageRequest.of(page, size));
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
                 .map(Language::getId)
                 .collect(Collectors.toList());
         if(languagesId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findAllByLanguageId(languagesId, PageRequest.of(page, size));
+        List<Book> results = bookRepository.findAllByLanguageIdIn(languagesId, PageRequest.of(page, size));
         return bookMapper.fromListEntityToDto(results);
     }
 

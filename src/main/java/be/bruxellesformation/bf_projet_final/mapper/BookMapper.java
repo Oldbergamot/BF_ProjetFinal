@@ -13,7 +13,7 @@ import java.util.List;
 public class BookMapper {
 
     public BookDTO toDto(Book entity){
-        if(entity==null);
+        if(entity==null)return null;
         return BookDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())

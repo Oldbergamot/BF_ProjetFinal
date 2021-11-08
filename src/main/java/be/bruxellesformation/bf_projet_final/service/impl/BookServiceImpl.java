@@ -1,7 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
 import be.bruxellesformation.bf_projet_final.exceptions.BookNotFoundException;
-import be.bruxellesformation.bf_projet_final.exceptions.LanguageNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
 import be.bruxellesformation.bf_projet_final.mapper.ReviewMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
@@ -10,7 +9,6 @@ import be.bruxellesformation.bf_projet_final.model.entity.*;
 import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
 import be.bruxellesformation.bf_projet_final.repository.BookRepository;
-import be.bruxellesformation.bf_projet_final.repository.LanguageRepository;
 import be.bruxellesformation.bf_projet_final.repository.ReviewReposiroty;
 import be.bruxellesformation.bf_projet_final.service.BookService;
 import org.springframework.data.domain.Page;
@@ -27,14 +25,12 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final ReviewMapper reviewMapper;
     private final BookRepository bookRepository;
-    private final LanguageRepository languageRepository;
     private final ReviewReposiroty reviewReposiroty;
 
-    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, LanguageRepository languageRepository, ReviewReposiroty reviewReposiroty) {
+    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, ReviewReposiroty reviewReposiroty) {
         this.bookMapper = bookMapper;
         this.reviewMapper = reviewMapper;
         this.bookRepository = bookRepository;
-        this.languageRepository = languageRepository;
         this.reviewReposiroty = reviewReposiroty;
     }
 
@@ -97,7 +93,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDTO> getAllByPublishedYear(int year) {
-        List<Book> books = bookRepository.findBooksByPublishedDateYear(year);
+        List<Book> books = bookRepository.findBooksByPublishedDateContains(year);
         return bookMapper.fromListEntityToDto(books);
     }
 

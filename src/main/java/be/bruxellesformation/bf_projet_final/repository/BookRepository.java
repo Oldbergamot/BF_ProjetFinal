@@ -14,33 +14,36 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
     @Query(value = "SELECT distinct b FROM Book b JOIN b.authors a WHERE a.id=?1")
-    List<Book> findBooksByAuthors(List<Long> id, Pageable pageable);
+    List<Book> findBooksByAuthorsIn(List<Long> id, Pageable pageable);
 
-    List<Book> findBooksByAuthors(List<Long>id);
+    List<Book> findBooksByAuthorsIn(List<Long>id);
 
     List<Book> findBooksByLanguageId(Long id);
 
-    List<Book> findBooksByLanguageId(List<Long> id);
+    List<Book> findBooksByLanguageIdIn(List<Long> id);
 
-    List<Book> findBooksByPublishedDateYear(int year);
+//    @Query("SELECT b from Book b JOIN b.publishedDate ")
+//    List<Book> findBooksByPublishedDateYear(int year);
+
+    List<Book> findBooksByPublishedDateContains(int year);
 
     List<Book> findBooksByPublisherId(Long id);
 
-    List<Book> findBooksByPublisherId(List<Long> id);
+    List<Book> findBooksByPublisherIdIn(List<Long> id);
 
     List<Book> findBooksByGenreId(Long id);
 
-    List<Book> findBooksByGenreId(List<Long> id);
+    List<Book> findBooksByGenreIdIn(List<Long> id);
 
     List<Book> findBooksByName(String name);
 
     List<Book> findBooksByGenre(Genre genre);
 
-    List<Book> findAllByGenreId(List<Long> id, Pageable pageable);
+    List<Book> findAllByGenreIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByLanguageId(List<Long> id, Pageable pageable);
+    List<Book> findAllByLanguageIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByPublisherId(List<Long> id, Pageable pageable);
+    List<Book> findAllByPublisherIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByGenreIdOrLanguageIdOrPublisherId(List<Long> idGenre, List<Long> idLanguage, List <Long> idPublisher, Pageable pageable);
+    List<Book> findAllByGenreIdInOrLanguageIdInOrPublisherIdIn(List<Long> idGenre, List<Long> idLanguage, List <Long> idPublisher, Pageable pageable);
 }
