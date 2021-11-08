@@ -70,5 +70,12 @@ public class BookMapper {
         return results;
     }
 
+    public List<Book> fromListDTOToEntity(List<BookDTO> list) {
+        List<Book> books = new ArrayList<>();
+        for(BookDTO dto : list){
+            books.add(toEntity(dto));
+        }
+        return books;
+    }
 
 }

@@ -1,6 +1,7 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
 import be.bruxellesformation.bf_projet_final.exceptions.BookNotFoundException;
+import be.bruxellesformation.bf_projet_final.exceptions.PreferenceNotCompletedException;
 import be.bruxellesformation.bf_projet_final.exceptions.UserNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
 import be.bruxellesformation.bf_projet_final.mapper.UserMapper;
@@ -14,6 +15,7 @@ import be.bruxellesformation.bf_projet_final.repository.BookRepository;
 import be.bruxellesformation.bf_projet_final.repository.UserRepository;
 import be.bruxellesformation.bf_projet_final.service.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -149,93 +151,180 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<BookDTO> getRecommandationOnGenre(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        List<Genre> genres = u.getPrefGenre();
-        if(genres.size() == 0) return null;
-        List<Book> books = new ArrayList<>();
-        // getting books
-        for (Genre g : genres) {
-            List<Book> temp = bookRepository.findByGenre(g);
-            if(temp != null) books.addAll(temp);
-        }
-        //maybe look fur duplicate?
-        return bookMapper.fromListEntityToDto(books);
+
+        List<Long> genresId = u.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        if(genresId.size()==0) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findBooksByGenreId(genresId);
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
     public List<BookDTO> getRecommandationOnAuthor(Long id) {
-//        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-//        List<Author> authors = u.getPrefAuthor();
-//        if (authors.size() == 0) return null;
-//        List<Book> books = new ArrayList<>();
-//        //getting books
-//        for(Author a : authors) {
-//            List<Book> temp = bookRepository.findByAuthor(a);
-//            if(temp.size()==0) books.addAll(temp);
-//        }
-//        return bookMapper.fromListEntityToDto(temp);
-        return null;
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        List<Long> authorsId = u.getPrefAuthor()
+                .stream()
+                .map(Author::getId)
+                .collect(Collectors.toList());
+        if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findBooksByAuthors(authorsId);
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
     public List<BookDTO> getRecommandationOnPublisher(Long id) {
-        User u = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
-        List<Publisher> publishers = u.getPrefPub();
-        if(publishers.size() == 0) return null;
-        List<Book> books = new ArrayList<>();
-        //getting books
-        for (Publisher p : publishers){
-            List<Book> temp = bookRepository.findByPublisher(p);
-            if (temp.size()!=0)books.addAll(temp);
-        }
-        return bookMapper.fromListEntityToDto(books);
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        List<Long> publisherId = u.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        if(publisherId.size()==0) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findBooksByPublisherId(publisherId);
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
     public List<BookDTO> getRecommandationOnLanguage(Long id) {
-        User u = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
-        List<Language> languages = u.getPrefLang();
-        if(languages.size()==0) return null;
-        List<Book>books = new ArrayList<>();
-        //getting books
-        for (Language l : languages) {
-            List<Book>temp = bookRepository.findByLanguage(l);
-            if(temp.size() != 0) books.addAll(temp);
-        }
-        return bookMapper.fromListEntityToDto(books);
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        List<Long> languagesId = u.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        if(languagesId.size()==0) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findBooksByLanguageId(languagesId);
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
     public Page<UserDTO> getAllWithPagination(int page, int size) {
-        return null;
+        Page<User>results = userRepository.findAll(PageRequest.of(page, size));
+        return results.map(userMapper::toDto);
     }
 
     @Override
-    public List<BookDTO> getGlobalRecommandationWithPagination(Long id) {
-        return null;
+    public List<BookDTO> getGlobalRecommandationWithPagination(Long id,int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        List<Long> genresId = user.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        List<Long> publishersId = user.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        List<Long> languagesId = user.getPrefLang()
+                .stream()
+                .map(Language::getId)
+                .collect(Collectors.toList());
+        List<Book>results = bookRepository.findAllByGenreIdOrLanguageIdOrPublisherId(genresId,languagesId,publishersId, PageRequest.of(page, size));
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
-    public List<BookDTO> getRecommandationOnGenreWithPagination(Long id) {
-        return null;
+    public List<BookDTO> getRecommandationOnGenreWithPagination(Long id, int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        List<Long> genresId = user.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        if(genresId.size() == 0 ) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findAllByGenreId(genresId,PageRequest.of(page, size) );
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
-    public List<BookDTO> getRecommandationOnAuthorWithPaginationr(Long id) {
-        return null;
+    public List<BookDTO> getRecommandationOnAuthorWithPaginationr(Long id,int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        List<Long> authorsId = user.getPrefAuthor()
+                .stream()
+                .map(Author::getId)
+                .collect(Collectors.toList());
+        if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
+        List<Book> books = bookRepository.findBooksByAuthors(authorsId, PageRequest.of(page, size));
+        return bookMapper.fromListEntityToDto(books);
     }
 
     @Override
-    public List<BookDTO> getRecommandationOnPublisherWithPagination(Long id) {
-        return null;
+    public List<BookDTO> getRecommandationOnPublisherWithPagination(Long id,int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        List<Long> publishersId = user.getPrefGenre()
+                .stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList());
+        if(publishersId.size() == 0 ) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findAllByPublisherId(publishersId,PageRequest.of(page, size));
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
-    public List<BookDTO> getRecommandationOnLanguageWithPagination(Long id) {
-        return null;
+    public List<BookDTO> getRecommandationOnLanguageWithPagination(Long id,int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        List<Long> languagesId = user.getPrefLang()
+                .stream()
+                .map(Language::getId)
+                .collect(Collectors.toList());
+        if(languagesId.size() == 0 ) throw new PreferenceNotCompletedException();
+        List<Book> results = bookRepository.findAllByLanguageId(languagesId, PageRequest.of(page, size));
+        return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
     public UserDTO partialUpdate(Long id, Map<String, Object> values) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+
+        for(String s : values.keySet()){
+            switch (s) {
+                case "username":
+                    String username = (String) values.get(s);
+                    if (username == null || username.isBlank())
+                        throw new IllegalArgumentException("Invalid value for username");
+                    user.setUsername(username);
+                    break;
+                case "email":
+                    String email = (String) values.get(s);
+                    if (email == null || email.isBlank()) throw new IllegalArgumentException("Invalid value for email");
+                    user.setEmail(email);
+                    break;
+                case "password":
+                    String password = (String) values.get(s);
+                    if (password == null || password.isBlank())
+                        throw new IllegalArgumentException("Invalid value for password");
+                    user.setPassword(password);
+                    break;
+                case "wishToRead":
+                    List<Book> wishToRead = (List<Book>) values.get(s);
+                    if (wishToRead.size() == 0) throw new IllegalArgumentException("Invalid value for Wish to Read");
+                    user.setWishToRead(wishToRead);
+                    break;
+                case "hasRead":
+                    List<Book> hasRead = (List<Book>) values.get(s);
+                    if (hasRead.size() == 0) throw new IllegalArgumentException("Invalid value for has read");
+                    user.setWishToRead(hasRead);
+                    break;
+                case "prefLang":
+                    List<Language>prefLang = (List<Language>) values.get(s);
+                    if(prefLang.size() == 0 ) throw new IllegalArgumentException("Invalid value for pref lang");
+                    user.setPrefLang(prefLang);
+                    break;
+                case "prefPub" :
+                    List<Publisher>prefPub = (List<Publisher>) values.get(s);
+                    if(prefPub.size() == 0) throw new IllegalArgumentException("Invalid value for pref pub");
+                    user.setPrefPub(prefPub);
+                    break;
+                case "prefAuthor":
+                    List<Author>prefAuthor = (List<Author>) values.get(s);
+                    if(prefAuthor.size()==0) throw new IllegalArgumentException("Invalid value for pref Author");
+                    user.setPrefAuthor(prefAuthor);
+                    break;
+            }
+        }
+        userRepository.save(user);
+
+        return userMapper.toDto(user);
     }
 }

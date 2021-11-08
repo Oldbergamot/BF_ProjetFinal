@@ -5,6 +5,9 @@ import be.bruxellesformation.bf_projet_final.model.entity.Review;
 import be.bruxellesformation.bf_projet_final.model.form.review.AddReviewForm;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ReviewMapper {
 
@@ -49,4 +52,11 @@ public class ReviewMapper {
     }
 
 
+    public List<ReviewDTO> fromListEntityToDto(List<Review> reviews) {
+        List<ReviewDTO> results = new ArrayList<>();
+        for(Review r : reviews) {
+            results.add(toDto(r));
+        }
+        return results;
+    }
 }

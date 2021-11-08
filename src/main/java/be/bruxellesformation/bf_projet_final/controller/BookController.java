@@ -37,7 +37,7 @@ public class BookController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<BookDTO>getOneByName(@PathVariable String name) {
+    public ResponseEntity<List<BookDTO>>getOneByName(@PathVariable String name) {
         return ResponseEntity.ok(service.getOneByName(name));
     }
 
