@@ -26,52 +26,52 @@ public class BookController {
         return ResponseEntity.ok(service.insertOne(form));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get{id}")
     public ResponseEntity<BookDTO>getOne(@PathVariable Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/modify{id}")
     public ResponseEntity<BookDTO>modifyOne(@PathVariable Long id, @Valid @RequestBody ModifyBookForm form){
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/getName={name}")
     public ResponseEntity<List<BookDTO>>getOneByName(@PathVariable String name) {
         return ResponseEntity.ok(service.getOneByName(name));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getGenre{id}")
     public ResponseEntity<List<BookDTO>>getAllByGenre(@PathVariable Long id){
         return ResponseEntity.ok(service.getAllByGenre(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getPub{id}")
     public ResponseEntity<List<BookDTO>>getAllByPublisher(@PathVariable Long id) {
         return ResponseEntity.ok(service.getAllByPublisher(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getAuth{id}")
     public ResponseEntity<List<BookDTO>>getAllByAuthor(@PathVariable Long id) {
         return ResponseEntity.ok(service.getAllByAuthor(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getLang{id}")
     public ResponseEntity<List<BookDTO>>getAllByLanguage(@PathVariable Long id) {
         return ResponseEntity.ok(service.getAllByLanguage(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getYear{year}")
     public ResponseEntity<List<BookDTO>>getAllByYear(@PathVariable int year) {
         return ResponseEntity.ok(service.getAllByPublishedYear(year));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getReviews{id}")
     public ResponseEntity<List<ReviewDTO>>getReviews(@PathVariable Long id) {
         return ResponseEntity.ok(service.getReviews(id));
     }
 
-    @PutMapping("/{id}_{b}")
+    @PutMapping("/display{id}_{b}")
     public ResponseEntity<BookDTO>displayBook(@PathVariable Long id , boolean b){
         return ResponseEntity.ok(service.displayBook(id,b));
     }
