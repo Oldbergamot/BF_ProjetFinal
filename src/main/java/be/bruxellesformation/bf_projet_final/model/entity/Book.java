@@ -1,6 +1,7 @@
 package be.bruxellesformation.bf_projet_final.model.entity;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,7 +33,7 @@ public class Book {
 
     @Getter @Setter
     @Column(nullable = false)
-    private boolean display;
+    private boolean display = false;
 
     @Getter @Setter
     @ManyToMany(targetEntity = Author.class)
@@ -46,7 +47,7 @@ public class Book {
     @Getter @Setter
     private List<Review> reviews;
 
-    @ManyToOne()
+    @ManyToOne
     @Getter @Setter
     private Genre genre;
 

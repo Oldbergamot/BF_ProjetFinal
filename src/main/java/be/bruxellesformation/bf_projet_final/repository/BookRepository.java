@@ -2,21 +2,25 @@ package be.bruxellesformation.bf_projet_final.repository;
 
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
+@Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
 
-    @Query(value = "SELECT distinct b FROM Book b JOIN b.authors a WHERE a.id=?1")
+    @Query(value = "SELECT distinct b FROM Book b JOIN b.authors a ON a.id=?1")
     Page<Book> findBooksByAuthorsIn(List<Long> id, Pageable pageable);
 
+    @Query("select b from Book b where b.authors in ?1")
     List<Book> findBooksByAuthorsIn(List<Long>id);
+
+    @Query("select b from Book b JOIN b.authors a ON a.id = ?1")
+    List<Book> findBooksByAuthorsIn(Long id);
 
     List<Book> findBooksByLanguageId(Long id);
 

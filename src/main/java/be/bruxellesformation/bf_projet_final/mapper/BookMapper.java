@@ -40,14 +40,14 @@ public class BookMapper {
 
     public Book fromAddBookFormToEntity(AddBookForm form) {
         if(form == null) return null;
-        Book book = new Book();
-        book.setAuthors(form.getAuthors());
-        book.setGenre(form.getGenre());
-        book.setLanguage(form.getLanguage());
-        book.setName(form.getName());
-        book.setPublishedDate(form.getPublishedDate());
-        book.setSummary(form.getSummary());
-        return book;
+        return Book.builder()
+                .authors(form.getAuthors())
+                .genre(form.getGenre())
+                .language((form.getLanguage()))
+                .name(form.getName())
+                .summary(form.getSummary())
+                .publishedDate(form.getPublishedDate())
+                .build();
     }
 
     public Book fromModifyBookFormToEntity(ModifyBookForm form) {

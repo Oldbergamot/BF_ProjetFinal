@@ -23,7 +23,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO>insertOne(AddBookForm form){
+    public ResponseEntity<BookDTO>insertOne(@RequestBody AddBookForm form){
         return ResponseEntity.ok(service.insertOne(form));
     }
 
@@ -33,8 +33,7 @@ public class BookController {
     }
 
     @PutMapping("/modify/{id}")
-    public ResponseEntity<BookDTO>modifyOne(@PathVariable(value="id") Long id,
-                                            @Valid @RequestBody ModifyBookForm form){
+    public ResponseEntity<BookDTO>modifyOne(@PathVariable(value="id") Long id, @Valid @RequestBody ModifyBookForm form){
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
@@ -74,14 +73,12 @@ public class BookController {
     }
 
     @PutMapping("/display/{id}_{b}")
-    public ResponseEntity<BookDTO>displayBook(@PathVariable(value="id") Long id,
-                                              @PathVariable(value="b") boolean b){
+    public ResponseEntity<BookDTO>displayBook(@PathVariable(value="id") Long id,@PathVariable(value="b") boolean b){
         return ResponseEntity.ok(service.displayBook(id,b));
     }
 
     @PutMapping("/update/partial/{id}")
-    public ResponseEntity<BookDTO>partialUpdate(@PathVariable(value="id") Long id,
-                                                @Valid @RequestBody Map<String, Object> values){
+    public ResponseEntity<BookDTO>partialUpdate(@PathVariable(value="id") Long id,@Valid @RequestBody Map<String, Object> values){
         return ResponseEntity.ok(service.partialUpdate(id, values));
     }
 

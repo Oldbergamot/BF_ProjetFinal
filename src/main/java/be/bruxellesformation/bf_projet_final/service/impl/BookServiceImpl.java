@@ -8,16 +8,17 @@ import be.bruxellesformation.bf_projet_final.model.dto.ReviewDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
-import be.bruxellesformation.bf_projet_final.repository.BookRepository;
-import be.bruxellesformation.bf_projet_final.repository.ReviewReposiroty;
+import be.bruxellesformation.bf_projet_final.repository.*;
 import be.bruxellesformation.bf_projet_final.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,17 +27,46 @@ public class BookServiceImpl implements BookService {
     private final ReviewMapper reviewMapper;
     private final BookRepository bookRepository;
     private final ReviewReposiroty reviewReposiroty;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
+    private final LanguageRepository languageRepository;
 
-    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, ReviewReposiroty reviewReposiroty) {
+    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, ReviewReposiroty reviewReposiroty, GenreRepository genreRepository, AuthorRepository authorRepository, LanguageRepository languageRepository) {
         this.bookMapper = bookMapper;
         this.reviewMapper = reviewMapper;
         this.bookRepository = bookRepository;
         this.reviewReposiroty = reviewReposiroty;
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
+        this.languageRepository = languageRepository;
     }
 
     @Override
     public BookDTO insertOne(AddBookForm form) {
         Book book = bookMapper.fromAddBookFormToEntity(form);
+//        book.setGgenreRepository.save(book.getGenre());
+
+        Optional<Genre> optGenre = genreRepository.findById(form.getGenre().getId());
+        optGenre.ifPresentOrElse(book::setGenre, () -> book.setGenre(genreRepository.save(form.getGenre())));
+
+//        languageRepository.save(book.getLanguage());
+
+        Optional<Language> optLang = languageRepository.findById(form.getLanguage().getId());
+        optLang.ifPresentOrElse(book::setLanguage, () -> book.setLanguage(languageRepository.save(form.getLanguage())));
+
+//        authorRepository.saveAll(book.getAuthors());
+        List <Author> authorList = new ArrayList<>();
+
+        for (int i = 0 ; i < form.getAuthors().size() ; i++) {
+            Optional<Author> optAuth = authorRepository.findById(form.getAuthors().get(i).getId());
+            if(optAuth.isPresent()) {
+                authorList.add(form.getAuthors().get(i));
+            }else {
+                authorRepository.save(form.getAuthors().get(i));
+            }
+        }
+        book.setAuthors(authorList);
+
         bookRepository.save(book);
         return bookMapper.toDto(book);
     }
@@ -74,7 +104,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDTO> getAllByAuthor(Long idAuthor) {
-
+        List<Book> books = bookRepository.findBooksByAuthorsIn(idAuthor);
 
         return null;
     }
