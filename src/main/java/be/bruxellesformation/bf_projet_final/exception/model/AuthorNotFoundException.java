@@ -1,4 +1,4 @@
-package be.bruxellesformation.bf_projet_final.exceptions;
+package be.bruxellesformation.bf_projet_final.exception.model;
 
 public class AuthorNotFoundException extends RuntimeException{
 

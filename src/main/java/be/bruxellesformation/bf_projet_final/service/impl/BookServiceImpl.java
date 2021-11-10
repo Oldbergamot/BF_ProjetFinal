@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.BookNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.BookNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
 import be.bruxellesformation.bf_projet_final.mapper.ReviewMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;

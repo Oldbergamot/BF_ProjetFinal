@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.ReviewNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.ReviewNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.ReviewMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.ReviewDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Review;

@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.AuthorNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.AuthorNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.AuthorMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.AuthorDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Author;

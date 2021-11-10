@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.GenreNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.GenreNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.GenreMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.GenreDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Genre;

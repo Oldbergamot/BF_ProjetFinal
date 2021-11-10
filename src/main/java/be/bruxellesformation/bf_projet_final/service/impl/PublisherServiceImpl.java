@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.PublisherNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.PublisherNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.PublisherMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.PublisherDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Publisher;

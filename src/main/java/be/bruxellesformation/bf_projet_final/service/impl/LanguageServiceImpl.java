@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exceptions.LanguageNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.LanguageNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.LanguageMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.LanguageDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Language;

@@ -14,7 +14,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
     @Query(value = "SELECT distinct b FROM Book b JOIN b.authors a WHERE a.id=?1")
-    List<Book> findBooksByAuthorsIn(List<Long> id, Pageable pageable);
+    Page<Book> findBooksByAuthorsIn(List<Long> id, Pageable pageable);
 
     List<Book> findBooksByAuthorsIn(List<Long>id);
 
@@ -37,13 +37,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findBooksByName(String name);
 
-    List<Book> findBooksByGenre(Genre genre);
+    Page<Book> findAllByGenreIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByGenreIdIn(List<Long> id, Pageable pageable);
+    Page<Book> findAllByLanguageIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByLanguageIdIn(List<Long> id, Pageable pageable);
+    Page<Book> findAllByPublisherIdIn(List<Long> id, Pageable pageable);
 
-    List<Book> findAllByPublisherIdIn(List<Long> id, Pageable pageable);
-
-    List<Book> findAllByGenreIdInOrLanguageIdInOrPublisherIdIn(List<Long> idGenre, List<Long> idLanguage, List <Long> idPublisher, Pageable pageable);
+    Page<Book> findAllByGenreIdInOrLanguageIdInOrPublisherIdIn(List<Long> idGenre, List<Long> idLanguage, List <Long> idPublisher, Pageable pageable);
 }
