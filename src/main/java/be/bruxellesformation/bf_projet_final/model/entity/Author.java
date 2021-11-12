@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -49,7 +50,9 @@ public class Author {
         if (this == o) return true;
         if (!(o instanceof Author)) return false;
         Author author = (Author) o;
-        return display == author.display && Objects.equals(id, author.id) && Objects.equals(firstName, author.firstName) && Objects.equals(lastName, author.lastName) && Objects.equals(biography, author.biography) && Objects.equals(genres, author.genres);
+        return Objects.equals(id, author.id)
+                && Objects.equals(firstName.toLowerCase(Locale.ROOT), author.firstName.toLowerCase(Locale.ROOT))
+                && Objects.equals(lastName.toLowerCase(Locale.ROOT), author.lastName.toLowerCase(Locale.ROOT));
     }
 
     @Override

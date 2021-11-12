@@ -4,6 +4,7 @@ package be.bruxellesformation.bf_projet_final.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -37,7 +38,8 @@ public class Genre {
         if (this == o) return true;
         if (!(o instanceof Genre)) return false;
         Genre genre = (Genre) o;
-        return display == genre.display && Objects.equals(id, genre.id) && Objects.equals(name, genre.name);
+        return Objects.equals(id, genre.id) && Objects.equals(name.toLowerCase(Locale.ROOT),
+                genre.name.toLowerCase(Locale.ROOT));
     }
 
     @Override
@@ -45,3 +47,4 @@ public class Genre {
         return Objects.hash(id, name, display);
     }
 }
+

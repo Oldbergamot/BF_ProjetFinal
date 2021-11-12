@@ -69,7 +69,13 @@ public class Book {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return display == book.display && Objects.equals(id, book.id) && Objects.equals(name, book.name) && Objects.equals(publishedDate, book.publishedDate) && Objects.equals(summary, book.summary) && Objects.equals(authors, book.authors) && Objects.equals(publisher, book.publisher) && Objects.equals(reviews, book.reviews) && Objects.equals(genre, book.genre) && Objects.equals(language, book.language);
+        return Objects.equals(id, book.id) &&
+                Objects.equals(name, book.name)
+                && Objects.equals(publishedDate, book.publishedDate)
+                && Objects.equals(authors, book.authors)
+                && Objects.equals(publisher, book.publisher)
+                && Objects.equals(genre, book.genre)
+                && Objects.equals(language, book.language);
     }
 
     @Override

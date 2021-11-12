@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -50,7 +51,10 @@ public class Review {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review = (Review) o;
-        return note == review.note && display == review.display && Objects.equals(id, review.id) && Objects.equals(content, review.content) && Objects.equals(publishedDate, review.publishedDate) && Objects.equals(isAbout, review.isAbout);
+        return note == review.note
+                && Objects.equals(id, review.id) && Objects.equals(content.toLowerCase(Locale.ROOT), review.content.toLowerCase(Locale.ROOT))
+                && Objects.equals(publishedDate, review.publishedDate)
+                && Objects.equals(isAbout, review.isAbout);
     }
 
     @Override

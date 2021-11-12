@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -76,7 +77,9 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return display == user.display && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(wishToRead, user.wishToRead) && Objects.equals(hasRead, user.hasRead) && Objects.equals(prefLang, user.prefLang) && Objects.equals(prefPub, user.prefPub) && Objects.equals(prefGenre, user.prefGenre) && Objects.equals(prefAuthor, user.prefAuthor);
+        return Objects.equals(id, user.id)
+                && Objects.equals(username.toLowerCase(Locale.ROOT), user.username.toLowerCase(Locale.ROOT))
+                && Objects.equals(email, user.email);
     }
 
     @Override

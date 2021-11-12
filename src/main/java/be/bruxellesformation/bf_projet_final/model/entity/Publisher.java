@@ -3,6 +3,7 @@ package be.bruxellesformation.bf_projet_final.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -35,7 +36,8 @@ public class Publisher {
         if (this == o) return true;
         if (!(o instanceof Publisher)) return false;
         Publisher publisher = (Publisher) o;
-        return display == publisher.display && Objects.equals(id, publisher.id) && Objects.equals(name, publisher.name);
+        return Objects.equals(id, publisher.id)
+                && Objects.equals(name.toLowerCase(Locale.ROOT), publisher.name.toLowerCase(Locale.ROOT));
     }
 
     @Override

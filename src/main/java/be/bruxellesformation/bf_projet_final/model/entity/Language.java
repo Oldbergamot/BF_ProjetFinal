@@ -3,6 +3,7 @@ package be.bruxellesformation.bf_projet_final.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -35,7 +36,8 @@ public class Language {
         if (this == o) return true;
         if (!(o instanceof Language)) return false;
         Language language = (Language) o;
-        return display == language.display && Objects.equals(id, language.id) && Objects.equals(name, language.name);
+        return Objects.equals(id, language.id)
+                && Objects.equals(name.toLowerCase(Locale.ROOT), language.name.toLowerCase(Locale.ROOT));
     }
 
     @Override
