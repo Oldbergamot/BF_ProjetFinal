@@ -47,7 +47,11 @@ public class DataFiller implements InitializingBean {
         List<Genre> genreToInsert = List.of(
                 new Genre("fantastique"),
                 new Genre("policier"),
-                new Genre("sci-fi")
+                new Genre("sci-fi"),
+                new Genre("romance"),
+                new Genre("avanture"),
+                new Genre("guerre")
+
         );
         genreRepository.saveAll(genreToInsert);
 
@@ -76,8 +80,8 @@ public class DataFiller implements InitializingBean {
                 genreToInsert.get(1));
         List<Genre> genre2 = List.of(genreToInsert.get(1),
                 genreToInsert.get(2));
-        List<Genre> genre3 = List.of(genreToInsert.get(0));
-        List<Genre> genre4 = List.of(genreToInsert.get(2));
+        List<Genre> genre3 = List.of(genreToInsert.get(2), genreToInsert.get(3));
+        List<Genre> genre4 = List.of(genreToInsert.get(3), genreToInsert.get(4));
 
         List<Author> authorToInsert = List.of(
                 new Author("Jean-Luc", "Picard", genre1),
@@ -133,7 +137,50 @@ public class DataFiller implements InitializingBean {
                         List.of(authorToInsert.get(2)),
                         publisherToInsert.get(1),
                         genreToInsert.get(2),
-                        languageToInsert.get(2))
+                        languageToInsert.get(2)),
+                new Book("filler",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(3)),
+                        publisherToInsert.get(2),
+                        genreToInsert.get(2),
+                        languageToInsert.get(2)),
+                new Book("La guerre klingonne",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(0)),
+                        publisherToInsert.get(0),
+                        genreToInsert.get(2),
+                        languageToInsert.get(2)),
+                new Book("deepspace 8",
+                        LocalDate.now(),
+                        List.of(authorToInsert.get(0)),
+                        publisherToInsert.get(0),
+                        genreToInsert.get(2),
+                        languageToInsert.get(0)),
+                new Book("Ma famille étendue",
+                        LocalDate.of(800,12,15),
+                        List.of(authorToInsert.get(1)),
+                        publisherToInsert.get(1),
+                        genreToInsert.get(5),
+                        languageToInsert.get(1)),
+                new Book("Le Japon c'est surfait",
+                        LocalDate.of(1200,11,16),
+                        List.of(authorToInsert.get(1)),
+                        publisherToInsert.get(2),
+                        genreToInsert.get(5),
+                        languageToInsert.get(1)),
+                new Book("on fait tourner les serviettes",
+                        LocalDate.of(1989,9,16),
+                        List.of(authorToInsert.get(2)),
+                        publisherToInsert.get(2),
+                        genreToInsert.get(3),
+                        languageToInsert.get(2)),
+                new Book("Méditation sous sabot de cheval",
+                        LocalDate.of(200,8,19),
+                        List.of(authorToInsert.get(3)),
+                        publisherToInsert.get(3),
+                        genreToInsert.get(4),
+                        languageToInsert.get(1))
+
         );
         bookRepository.saveAll(bookToInsert);
 
