@@ -1,5 +1,6 @@
 package be.bruxellesformation.bf_projet_final.controller;
 
+import be.bruxellesformation.bf_projet_final.model.dto.AuthorDTO;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
 import be.bruxellesformation.bf_projet_final.model.dto.UserDTO;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO>insert(UserRegisterForm form) {
+    public ResponseEntity<UserDTO>insert(@Valid @RequestBody UserRegisterForm form) {
         return ResponseEntity.ok(service.insert(form));
     }
 
@@ -34,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @GetMapping
+    @GetMapping("/get/all")
     public ResponseEntity<List<UserDTO>>getAll(){
         return ResponseEntity.ok(service.getAll());
     }
@@ -44,35 +45,35 @@ public class UserController {
         return ResponseEntity.ok(service.updateOne(id, fom));
     }
 
-    @PutMapping("/delete/{id}")
+    @PatchMapping("/delete/{id}")
     public ResponseEntity<UserDTO>deleteOne(@PathVariable(value="id") Long id){
         return ResponseEntity.ok(service.deleteOne(id));
     }
 
-    @PutMapping("/update/pref/{id}")
+    @PatchMapping("/update/pref/{id}")
     public ResponseEntity<UserDTO>updatePref(@PathVariable(value="id") Long id,@RequestBody @Valid UserAddPrefForm form) {
         return ResponseEntity.ok(service.updatePref(id, form));
     }
 
-    @PutMapping("/add/wishread/{idUser}_{idBook}")
+    @PatchMapping("/add/wishread/{idUser}_{idBook}")
     public ResponseEntity<UserDTO>addToWishToRead(@PathVariable(value="idUser") Long idUser,
                                                   @PathVariable(value="idBook") Long idBook) {
         return ResponseEntity.ok(service.addToWishToRead(idUser, idBook));
     }
 
-    @PutMapping("/add/hasread/{idUser}_{idBook}")
+    @PatchMapping("/add/hasread/{idUser}_{idBook}")
     public ResponseEntity<UserDTO>addToHasRead(@PathVariable(value="idUser") Long idUser,
                                                @PathVariable(value="idBook") Long idBook){
         return ResponseEntity.ok(service.addToHasRead(idUser, idBook));
     }
 
-    @PutMapping("/remove/wishread/{idUser}_{idBook}")
+    @PatchMapping("/remove/wishread/{idUser}_{idBook}")
     public ResponseEntity<UserDTO>removeFromWishToRead(@PathVariable(value="idUser") Long idUser,
                                                        @PathVariable(value="idBook") Long idBook){
         return ResponseEntity.ok(service.removeFromWishToRead(idUser, idBook));
     }
 
-    @PutMapping("/remove/hasread/{idUser}_{idBook}")
+    @PatchMapping("/remove/hasread/{idUser}_{idBook}")
     public ResponseEntity<UserDTO>removeFromHasRead(@PathVariable(value="idUser") Long idUser,
                                                     @PathVariable(value="idBook") Long idBook) {
         return ResponseEntity.ok(service.removeFromHasRead(idUser, idBook));
@@ -123,9 +124,12 @@ public class UserController {
                                                                                  @PathVariable(value="size") int size) {
         return ResponseEntity.ok(service.getRecommandationOnAuthorWithPaginationr(id,page,size));
     }
-
-    @GetMapping("/get/recommandation/publisher/page/{id}_{page}_{size}")
-    public ResponseEntity<Page<BookDTO>>getRecommandationOnPublisherWithPagination(@PathVariable(value="id") Long id,
+/*
+il y avait un truc à faire mais j'ai zappé
+ */
+//    @GetMapping("/get/recommandation/publisher/page/{id}_{page}_{size}")
+    @GetMapping(path = {"/{user}/publisher?page={page}&size={size}"})
+    public ResponseEntity<Page<BookDTO>> getRecommandationOnPublisherWithPagination(@PathVariable(value="id") Long id,
                                                                                    @PathVariable(value="page") int page,
                                                                                    @PathVariable(value="size") int size) {
         return ResponseEntity.ok(service.getRecommandationOnPublisherWithPagination(id,page,size));
@@ -138,10 +142,15 @@ public class UserController {
         return ResponseEntity.ok(service.getRecommandationOnLanguageWithPagination(id, page,size));
     }
 
-    @PutMapping("/update/partial/{id}")
+    @PatchMapping("/update/partial/{id}")
     public ResponseEntity<UserDTO>partialUpdate(@PathVariable(value="id") Long id,
                                                 @RequestBody @Valid Map<String, Object> values) {
         return ResponseEntity.ok(service.partialUpdate(id, values));
+    }
+
+    @PatchMapping("/display/{id}_{b}")
+    public ResponseEntity<UserDTO>displayOne(@PathVariable Long id, @PathVariable boolean b) {
+        return ResponseEntity.ok(service.displayOne(id,b));
     }
 
 }

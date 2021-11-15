@@ -74,6 +74,15 @@ public class UserServiceImpl implements UserService {
     public UserDTO deleteOne(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         u.setDisplay(false);
+        userRepository.save(u);
+        return userMapper.toDto(u);
+    }
+
+    @Override
+    public UserDTO displayOne(Long id, boolean b) {
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        u.setDisplay(b);
+        userRepository.save(u);
         return userMapper.toDto(u);
     }
 
@@ -145,7 +154,7 @@ public class UserServiceImpl implements UserService {
         books.addAll(getRecommandationOnLanguage(id));
         books.addAll(getRecommandationOnPublisher(id));
 
-        return books;
+        return books.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
@@ -170,7 +179,8 @@ public class UserServiceImpl implements UserService {
                 .map(Author::getId)
                 .collect(Collectors.toList());
         if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
-        List<Book> results = bookRepository.findBooksByAuthorsIn(authorsId);
+//        List<Book> results = bookRepository.findBooksByAuthorsIn(authorsId);
+        List<Book> results = bookRepository.findBooksByAuthorsIdIn(authorsId);
         return bookMapper.fromListEntityToDto(results);
     }
 
@@ -178,9 +188,9 @@ public class UserServiceImpl implements UserService {
     public List<BookDTO> getRecommandationOnPublisher(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-        List<Long> publisherId = u.getPrefGenre()
+        List<Long> publisherId = u.getPrefPub()
                 .stream()
-                .map(Genre::getId)
+                .map(Publisher::getId)
                 .collect(Collectors.toList());
         if(publisherId.size()==0) throw new PreferenceNotCompletedException();
         List<Book> results = bookRepository.findBooksByPublisherIdIn(publisherId);

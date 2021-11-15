@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -105,8 +106,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDTO> getAllByAuthor(Long idAuthor) {
         List<Book> books = bookRepository.findBooksByAuthorsIn(idAuthor);
-
-        return null;
+        return books.stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -121,9 +123,15 @@ public class BookServiceImpl implements BookService {
         return bookMapper.fromListEntityToDto(results);
     }
 
+//    @Override
+//    public List<BookDTO> getAllByPublishedYear(int year) {
+//        List<Book> books = bookRepository.findBooksByPublishedDateYear(year);
+//        return bookMapper.fromListEntityToDto(books);
+//    }
+
     @Override
     public List<BookDTO> getAllByPublishedYear(int year) {
-        List<Book> books = bookRepository.findBooksByPublishedDateContains(year);
+        List<Book> books = bookRepository.findAll().stream().filter(b -> b.getPublishedDate()!=null).filter(b -> b.getPublishedDate().getYear() == year).collect(Collectors.toList());
         return bookMapper.fromListEntityToDto(books);
     }
 

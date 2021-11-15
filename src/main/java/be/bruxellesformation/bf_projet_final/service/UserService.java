@@ -19,6 +19,7 @@ public interface UserService{
     List<UserDTO> getAll();
     UserDTO updateOne(Long id, UserUpdateForm form);
     UserDTO deleteOne(Long id);
+    UserDTO displayOne(Long id, boolean b);
     UserDTO updatePref(Long id, UserAddPrefForm form);
     UserDTO addToWishToRead(Long idUser, Long idBook);
     UserDTO addToHasRead(Long idUser, Long idBook);

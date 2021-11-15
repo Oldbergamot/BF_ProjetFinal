@@ -19,6 +19,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b where b.authors in ?1")
     List<Book> findBooksByAuthorsIn(List<Long>id);
 
+    List<Book> findBooksByAuthorsIdIn(List <Long> id);
+
     @Query("select b from Book b JOIN b.authors a ON a.id = ?1")
     List<Book> findBooksByAuthorsIn(Long id);
 
@@ -29,8 +31,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 //    @Query("SELECT b from Book b JOIN b.publishedDate ")
 //    List<Book> findBooksByPublishedDateYear(int year);
 
-    List<Book> findBooksByPublishedDateContains(int year);
+//    @Query("select b from Book b where b.publishedDate.year = ?1")
+//    List<Book> findBooksByPublishedDateYear(int year);
 
+    @Query("select b from Book b where b.publisher.id = ?1")
     List<Book> findBooksByPublisherId(Long id);
 
     List<Book> findBooksByPublisherIdIn(List<Long> id);

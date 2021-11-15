@@ -5,6 +5,7 @@ import be.bruxellesformation.bf_projet_final.model.dto.ReviewDTO;
 import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
 import be.bruxellesformation.bf_projet_final.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,14 +73,23 @@ public class BookController {
         return ResponseEntity.ok(service.getReviews(id));
     }
 
-    @PutMapping("/display/{id}_{b}")
+    @PatchMapping("/display/{id}_{b}")
     public ResponseEntity<BookDTO>displayBook(@PathVariable(value="id") Long id,@PathVariable(value="b") boolean b){
         return ResponseEntity.ok(service.displayBook(id,b));
     }
 
-    @PutMapping("/update/partial/{id}")
+    @PatchMapping("/update/partial/{id}")
     public ResponseEntity<BookDTO>partialUpdate(@PathVariable(value="id") Long id,@Valid @RequestBody Map<String, Object> values){
         return ResponseEntity.ok(service.partialUpdate(id, values));
     }
 
+    @GetMapping("/get/all")
+    public  ResponseEntity<List<BookDTO>>getAll(){
+        return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/get/all/pag/{page}_{size}")
+    public ResponseEntity <Page<BookDTO>> getAllWithPagination(@PathVariable int page,@PathVariable int size){
+        return  ResponseEntity.ok(service.getAllWithPagination(page,size));
+    };
 }
