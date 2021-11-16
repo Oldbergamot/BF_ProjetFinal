@@ -24,18 +24,18 @@ public class ReviewController {
         return ResponseEntity.ok(service.insert(form));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ReviewDTO>modifyOne(@PathVariable Long id, @RequestBody @Valid ModifyReviewForm form) {
+    @PutMapping("/{review}")
+    public ResponseEntity<ReviewDTO>modifyOne(@PathVariable(value = "review") Long id, @RequestBody @Valid ModifyReviewForm form) {
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewDTO>getOne(@PathVariable Long id) {
+    @GetMapping("/{review}")
+    public ResponseEntity<ReviewDTO>getOne(@PathVariable(value = "review") Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PutMapping("/{id}_{b}")
-    public ResponseEntity<ReviewDTO>displayReview(@PathVariable Long id, @PathVariable boolean b) {
+    @PutMapping("/{review}/display={display}")
+    public ResponseEntity<ReviewDTO>displayReview(@PathVariable(value = "review") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayReview(id, b));
     }
 }

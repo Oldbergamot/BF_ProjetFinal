@@ -24,18 +24,18 @@ public class GenreController {
         return ResponseEntity.ok(service.insert(form));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<GenreDTO>modifyOne(@PathVariable Long id, @Valid @RequestBody ModifyGenreForm form) {
+    @PutMapping("/{genre}")
+    public ResponseEntity<GenreDTO>modifyOne(@PathVariable(value = "genre")Long id, @Valid @RequestBody ModifyGenreForm form) {
         return ResponseEntity.ok(service.modifyOne(id,form));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GenreDTO>getOne(@PathVariable Long id) {
+    @GetMapping("/{genre}")
+    public ResponseEntity<GenreDTO>getOne(@PathVariable(value = "genre") Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PutMapping("/{id}_{b}")
-    public ResponseEntity<GenreDTO>displayGenre(@PathVariable Long id, @PathVariable boolean b){
+    @PutMapping("/{genre}/display={display}")
+    public ResponseEntity<GenreDTO>displayGenre(@PathVariable(value = "display") Long id, @PathVariable boolean b){
         return ResponseEntity.ok(service.displayGenre(id, b));
     }
 

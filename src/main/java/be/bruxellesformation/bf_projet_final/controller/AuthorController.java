@@ -27,33 +27,33 @@ public class AuthorController {
         return ResponseEntity.ok(service.insert(form));
     }
 
-    @PutMapping("/modify/{id}")
-    public ResponseEntity<AuthorDTO>modifyOne(@PathVariable Long id, @Valid @RequestBody ModifyAuthorForm form) {
+    @PutMapping("/{author}")
+    public ResponseEntity<AuthorDTO>modifyOne(@PathVariable(value = "author") Long id, @Valid @RequestBody ModifyAuthorForm form) {
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<AuthorDTO>getOne(@PathVariable Long id) {
+    @GetMapping("/{author}")
+    public ResponseEntity<AuthorDTO>getOne(@PathVariable(value = "author") Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PatchMapping("/display/{id}_{b}")
-    public ResponseEntity<AuthorDTO>displayOne(@PathVariable Long id, @PathVariable boolean b){
+    @PatchMapping("/{author}/display={display}")
+    public ResponseEntity<AuthorDTO>displayOne(@PathVariable(value = "author") Long id, @PathVariable(value = "display") boolean b){
         return ResponseEntity.ok(service.displayAuthor(id, b));
     }
 
-    @PatchMapping("/update/partial/{id}")
-    public ResponseEntity<AuthorDTO>updatePartial(@PathVariable Long id, @Valid@RequestBody Map<String, Object> values){
+    @PatchMapping("/{author}/update/partial")
+    public ResponseEntity<AuthorDTO>updatePartial(@PathVariable(value = "author") Long id, @Valid@RequestBody Map<String, Object> values){
         return ResponseEntity.ok(service.partialUpdate(id, values));
     }
 
-    @GetMapping("/get/all")
+    @GetMapping
     public ResponseEntity<List<AuthorDTO>>getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 
-    @GetMapping("/get/all/page/{page}_{size}")
-    public ResponseEntity<Page<AuthorDTO>> getAllWithPagination( @PathVariable int page, @PathVariable int size){
+    @GetMapping("/all/page={page}&size={size}")
+    public ResponseEntity<Page<AuthorDTO>> getAllWithPagination( @PathVariable(value = "page") int page, @PathVariable (value = "size") int size){
         return ResponseEntity.ok(service.getAllWithPagination(page, size));
     }
 

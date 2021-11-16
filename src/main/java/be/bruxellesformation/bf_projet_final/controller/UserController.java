@@ -60,24 +60,22 @@ public class UserController {
                                                   @RequestBody() Long book) {
         return ResponseEntity.ok(service.addToWishToRead(idUser, book));
     }
-/*
 
- */
-    @PatchMapping("/{user}/hasread/book={idBook}")
+    @PatchMapping("/{user}/hasread")
     public ResponseEntity<UserDTO>addToHasRead(@PathVariable(value="user") Long idUser,
-                                               @PathVariable(value="idBook") Long idBook){
+                                               @RequestBody() Long idBook){
         return ResponseEntity.ok(service.addToHasRead(idUser, idBook));
     }
 
-    @PatchMapping("/{user}/wishread/remove/book={idBook}")
+    @PatchMapping("/{user}/wishread/remove")
     public ResponseEntity<UserDTO>removeFromWishToRead(@PathVariable(value="user") Long idUser,
-                                                       @PathVariable(value="idBook") Long idBook){
+                                                       @RequestBody() Long idBook){
         return ResponseEntity.ok(service.removeFromWishToRead(idUser, idBook));
     }
 
-    @PatchMapping("/{user}/hasread/remove/book={idBook}")
+    @PatchMapping("/{user}/hasread/remove")
     public ResponseEntity<UserDTO>removeFromHasRead(@PathVariable(value="user") Long idUser,
-                                                    @PathVariable(value="idBook") Long idBook) {
+                                                    @RequestBody() Long idBook) {
         return ResponseEntity.ok(service.removeFromHasRead(idUser, idBook));
     }
 

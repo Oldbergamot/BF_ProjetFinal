@@ -25,18 +25,18 @@ public class LanguageController {
         return ResponseEntity.ok(service.insert(form));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<LanguageDTO>modifyOne(@PathVariable Long id, @Valid @RequestBody ModifyLanguageForm form) {
+    @PutMapping("/{lang}")
+    public ResponseEntity<LanguageDTO>modifyOne(@PathVariable(value = "lang") Long id, @Valid @RequestBody ModifyLanguageForm form) {
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<LanguageDTO>getOne(@PathVariable Long id) {
+    @GetMapping("/{lang}")
+    public ResponseEntity<LanguageDTO>getOne(@PathVariable(value = "lang") Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PutMapping("/{id}_{b}")
-    public ResponseEntity<LanguageDTO>displayLanguage(@PathVariable Long id, @PathVariable boolean b) {
+    @PutMapping("/{lang}/display={display}")
+    public ResponseEntity<LanguageDTO>displayLanguage(@PathVariable(value = "lang") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayLanguage(id, b));
     }
 }

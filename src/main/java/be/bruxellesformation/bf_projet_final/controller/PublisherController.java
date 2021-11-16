@@ -24,18 +24,18 @@ public class PublisherController {
         return ResponseEntity.ok(service.insert(form));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PublisherDTO>modifyOne(@PathVariable Long id, @Valid @RequestBody ModifyPublisherForm form) {
+    @PutMapping("/{pub}")
+    public ResponseEntity<PublisherDTO>modifyOne(@PathVariable(value = "pub") Long id, @Valid @RequestBody ModifyPublisherForm form) {
         return ResponseEntity.ok(service.modifyOne(id, form));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PublisherDTO>getOne(@PathVariable Long id) {
+    @GetMapping("/{pub}")
+    public ResponseEntity<PublisherDTO>getOne(@PathVariable(value = "pub") Long id) {
         return ResponseEntity.ok(service.getOne(id));
     }
 
-    @PutMapping("/{id}_{b}")
-    public ResponseEntity<PublisherDTO>displayPublisher(@PathVariable Long id, @PathVariable boolean b) {
+    @PutMapping("/{pub}/display={display}")
+    public ResponseEntity<PublisherDTO>displayPublisher(@PathVariable(value = "pub") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayPublisher(id, b));
     }
 
