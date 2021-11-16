@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDTO insert(AddReviewForm form) {
-        Review r = mapper.formAddReviewFormToEntity(form);
+        Review r = mapper.fromFormToEntity(form);
         repository.save(r);
         return mapper.toDto(r);
     }

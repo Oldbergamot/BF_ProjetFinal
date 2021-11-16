@@ -27,7 +27,7 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public LanguageDTO insert(AddLanguageForm form) {
-        Language l = mapper.formAddLanguageFormToEntity(form);
+        Language l = mapper.fromFormToEntity(form);
         repository.save(l);
         return mapper.toDto(l);
     }

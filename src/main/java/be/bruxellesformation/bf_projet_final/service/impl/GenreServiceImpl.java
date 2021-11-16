@@ -27,7 +27,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreDTO insert(AddGenreForm form) {
-        Genre g = mapper.fromAddGenreFormToEntity(form);
+        Genre g = mapper.fromFormToEntity(form);
         repository.save(g);
         return mapper.toDto(g);
     }

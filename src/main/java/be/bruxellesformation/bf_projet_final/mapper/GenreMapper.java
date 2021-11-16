@@ -7,7 +7,7 @@ import be.bruxellesformation.bf_projet_final.model.form.genre.ModifyGenreForm;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GenreMapper {
+public class GenreMapper implements BaseMapper<GenreDTO, AddGenreForm, Genre> {
 
     public GenreDTO toDto(Genre entity){
         if(entity == null) return null;
@@ -25,17 +25,10 @@ public class GenreMapper {
                 .build();
     }
 
-    public Genre fromAddGenreFormToEntity(AddGenreForm form) {
+    public Genre fromFormToEntity(AddGenreForm form) {
        if (form == null)return null;
        Genre genre = new Genre();
        genre.setName(form.getName());
        return genre;
-    }
-
-    public Genre fromModifyGenreFormToEntity(ModifyGenreForm form) {
-        if(form == null) return null;
-        Genre genre = new Genre();
-        genre.setName(form.getName());
-        return genre;
     }
 }

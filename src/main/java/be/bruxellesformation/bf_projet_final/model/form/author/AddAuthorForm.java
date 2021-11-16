@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class AddAuthorForm {
+public class AddAuthorForm{
 
     private String firstName;
     private String lastName;

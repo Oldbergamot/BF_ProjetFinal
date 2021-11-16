@@ -8,7 +8,7 @@ import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserMapper{
+public class UserMapper implements BaseMapper<UserDTO, UserRegisterForm, User>{
 
     public UserDTO toDto(User entity){
         if (entity == null) return null;
@@ -41,7 +41,7 @@ public class UserMapper{
                 .build();
     }
 
-    public User fromUserRegisterFormToEntity(UserRegisterForm form) {
+    public User fromFormToEntity(UserRegisterForm form) {
         if (form == null) return null;
         User user = new User();
         user.setUsername(form.getUsername());

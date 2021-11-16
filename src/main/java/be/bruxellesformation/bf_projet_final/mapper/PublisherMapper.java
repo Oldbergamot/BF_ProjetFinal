@@ -7,7 +7,7 @@ import be.bruxellesformation.bf_projet_final.model.form.Publisher.ModifyPublishe
 import org.springframework.stereotype.Service;
 
 @Service
-public class PublisherMapper {
+public class PublisherMapper implements BaseMapper <PublisherDTO,AddPublisherForm,Publisher>{
 
     public Publisher toEntity(PublisherDTO dto) {
         if (dto == null) return null;
@@ -25,7 +25,7 @@ public class PublisherMapper {
                 .build();
     }
 
-    public Publisher formAdPublisherFormToEntity(AddPublisherForm form) {
+    public Publisher fromFormToEntity(AddPublisherForm form) {
         if (form == null) return null;
         Publisher publisher = new Publisher();
         publisher.setName(form.getName());

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ReviewMapper {
+public class ReviewMapper implements BaseMapper <ReviewDTO, AddReviewForm, Review> {
 
     public Review toEntity(ReviewDTO dto) {
         if(dto == null) return null;
@@ -33,7 +33,7 @@ public class ReviewMapper {
                 .build();
     }
 
-    public Review formAddReviewFormToEntity(AddReviewForm form) {
+    public Review fromFormToEntity(AddReviewForm form) {
         if(form == null)return  null;
         Review review = new Review();
         review.setContent(form.getContent());

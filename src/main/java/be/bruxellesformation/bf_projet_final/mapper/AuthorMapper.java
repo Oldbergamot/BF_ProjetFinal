@@ -5,8 +5,11 @@ import be.bruxellesformation.bf_projet_final.model.entity.Author;
 import be.bruxellesformation.bf_projet_final.model.form.author.AddAuthorForm;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 @Service
-public class AuthorMapper {
+public class AuthorMapper implements BaseMapper <AuthorDTO, AddAuthorForm,Author>{
 
     public Author toEntity(AuthorDTO dto) {
         if (dto == null) return null;
@@ -18,6 +21,9 @@ public class AuthorMapper {
                 .genres(dto.getGenres())
                 .build();
     }
+    public Stream<Author> toEntities(Collection<AuthorDTO> dtos) {
+        return dtos.stream().map(this::toEntity);
+    }
 
     public AuthorDTO toDto(Author entity) {
         if(entity == null) return null;
@@ -25,22 +31,18 @@ public class AuthorMapper {
                 .biography(entity.getBiography())
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
-                .genres(entity.getGenres())
+//                .genres(entity.getGenres())
                 .id(entity.getId())
                 .build();
     }
 
-    public Author fromAddAuthorFormToEntity(AddAuthorForm form) {
-        if(form == null) return null;
-        Author author = new Author();
-        author.setBiography(form.getBiography());
-        author.setFirstName(form.getFirstName());
-        author.setLastName(form.getLastName());
-        author.setGenres(form.getGenres());
-        return author;
+
+
+    public Stream<AuthorDTO> toDtos(Collection<Author> entities) {
+        return entities.stream().map(this::toDto);
     }
 
-    public Author fromModifyAuthorFormToEntity(AddAuthorForm form) {
+    public Author fromFormToEntity(AddAuthorForm form) {
         if(form == null) return null;
         Author author = new Author();
         author.setBiography(form.getBiography());

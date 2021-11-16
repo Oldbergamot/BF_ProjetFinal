@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDTO insertOne(AddBookForm form) {
-        Book book = bookMapper.fromAddBookFormToEntity(form);
+        Book book = bookMapper.fromFormToEntity(form);
 //        book.setGgenreRepository.save(book.getGenre());
 
         Optional<Genre> optGenre = genreRepository.findById(form.getGenre().getId());

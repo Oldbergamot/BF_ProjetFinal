@@ -19,7 +19,7 @@ public class BookDTO {
     private String name;
     private LocalDate publishedDate;
     private String summary;
-    private List<Author> authors;
+    private List<AuthorDTO> authors;
     private Publisher publisher;
     private List<Review> reviews;
     private Genre genre;

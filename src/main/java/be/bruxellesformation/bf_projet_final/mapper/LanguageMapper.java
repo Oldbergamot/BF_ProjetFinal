@@ -7,7 +7,7 @@ import be.bruxellesformation.bf_projet_final.model.form.Language.ModifyLanguageF
 import org.springframework.stereotype.Service;
 
 @Service
-public class LanguageMapper {
+public class LanguageMapper implements BaseMapper<LanguageDTO, AddLanguageForm, Language>{
 
     public LanguageDTO toDto(Language entity) {
         if(entity == null) return null;
@@ -25,7 +25,7 @@ public class LanguageMapper {
                 .build();
     }
 
-    public Language formAddLanguageFormToEntity(AddLanguageForm form) {
+    public Language fromFormToEntity(AddLanguageForm form) {
         if (form == null) return null;
         Language language = new Language();
         language.setName(form.getName());

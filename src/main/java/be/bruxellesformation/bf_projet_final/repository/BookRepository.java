@@ -28,12 +28,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findBooksByLanguageIdIn(List<Long> id);
 
-//    @Query("SELECT b from Book b JOIN b.publishedDate ")
-//    List<Book> findBooksByPublishedDateYear(int year);
-
-//    @Query("select b from Book b where b.publishedDate.year = ?1")
-//    List<Book> findBooksByPublishedDateYear(int year);
-
     @Query("select b from Book b where b.publisher.id = ?1")
     List<Book> findBooksByPublisherId(Long id);
 

@@ -27,7 +27,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public PublisherDTO insert(AddPublisherForm form) {
-        Publisher p = mapper.formAdPublisherFormToEntity(form);
+        Publisher p = mapper.fromFormToEntity(form);
         repository.save(p);
         return mapper.toDto(p);
     }

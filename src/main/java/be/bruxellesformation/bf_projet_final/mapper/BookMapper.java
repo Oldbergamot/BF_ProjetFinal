@@ -4,13 +4,21 @@ import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.Book;
 import be.bruxellesformation.bf_projet_final.model.form.book.AddBookForm;
 import be.bruxellesformation.bf_projet_final.model.form.book.ModifyBookForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class BookMapper {
+public class BookMapper implements BaseMapper <BookDTO, AddBookForm, Book>{
+    private final AuthorMapper authorMapper;
+
+    @Autowired
+    public BookMapper(AuthorMapper authorMapper) {
+        this.authorMapper = authorMapper;
+    }
 
     public BookDTO toDto(Book entity){
         if(entity==null)return null;
@@ -19,11 +27,12 @@ public class BookMapper {
                 .name(entity.getName())
                 .publishedDate(entity.getPublishedDate())
                 .summary(entity.getSummary())
-                .authors(entity.getAuthors())
+                .authors(this.authorMapper.toDtos(entity.getAuthors()).collect(Collectors.toList()))
                 .language(entity.getLanguage())
                 .genre(entity.getGenre())
                 .build();
     }
+
 
     public Book toEntity(BookDTO dto) {
         if(dto == null) return null;
@@ -32,13 +41,13 @@ public class BookMapper {
                 .name(dto.getName())
                 .publishedDate(dto.getPublishedDate())
                 .summary(dto.getSummary())
-                .authors(dto.getAuthors())
+                .authors(this.authorMapper.toEntities(dto.getAuthors()).collect(Collectors.toList()))
                 .language(dto.getLanguage())
                 .genre(dto.getGenre())
                 .build();
     }
 
-    public Book fromAddBookFormToEntity(AddBookForm form) {
+    public Book fromFormToEntity(AddBookForm form) {
         if(form == null) return null;
         return Book.builder()
                 .authors(form.getAuthors())
@@ -47,18 +56,6 @@ public class BookMapper {
                 .name(form.getName())
                 .summary(form.getSummary())
                 .publishedDate(form.getPublishedDate())
-                .build();
-    }
-
-    public Book fromModifyBookFormToEntity(ModifyBookForm form) {
-        if(form == null) return null;
-        return Book.builder()
-                .name(form.getName())
-                .publishedDate(form.getPublishedDate())
-                .summary(form.getSummary())
-                .authors(form.getAuthors())
-                .language(form.getLanguage())
-                .genre(form.getGenre())
                 .build();
     }
 

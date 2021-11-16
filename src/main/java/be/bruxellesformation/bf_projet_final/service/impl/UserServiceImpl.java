@@ -14,6 +14,8 @@ import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import be.bruxellesformation.bf_projet_final.repository.BookRepository;
 import be.bruxellesformation.bf_projet_final.repository.UserRepository;
 import be.bruxellesformation.bf_projet_final.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO insert(UserRegisterForm form) {
-        User u = userMapper.fromUserRegisterFormToEntity(form);
+        User u = userMapper.fromFormToEntity(form);
         userRepository.save(u);
         return userMapper.toDto(u);
     }
@@ -223,15 +226,17 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(Genre::getId)
                 .collect(Collectors.toList());
-        List<Long> publishersId = user.getPrefGenre()
+        List<Long> publishersId = user.getPrefPub()
                 .stream()
-                .map(Genre::getId)
+                .map(Publisher::getId)
                 .collect(Collectors.toList());
         List<Long> languagesId = user.getPrefLang()
                 .stream()
                 .map(Language::getId)
                 .collect(Collectors.toList());
+        logger.info("Page: "+ page+ ", size: "+ size);
         Page<Book>results = bookRepository.findAllByGenreIdInOrLanguageIdInOrPublisherIdIn(genresId,languagesId,publishersId, PageRequest.of(page, size));
+
         return results.map(bookMapper::toDto);
     }
 

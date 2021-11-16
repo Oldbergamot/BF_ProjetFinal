@@ -30,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDTO insert(AddAuthorForm form) {
-        Author a = mapper.fromAddAuthorFormToEntity(form);
+        Author a = mapper.fromFormToEntity(form);
         repository.save(a);
         return mapper.toDto(a);
     }
