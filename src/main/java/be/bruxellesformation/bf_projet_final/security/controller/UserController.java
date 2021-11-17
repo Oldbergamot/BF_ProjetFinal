@@ -1,12 +1,11 @@
-package be.bruxellesformation.bf_projet_final.controller;
+package be.bruxellesformation.bf_projet_final.security.controller;
 
-import be.bruxellesformation.bf_projet_final.model.dto.AuthorDTO;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
-import be.bruxellesformation.bf_projet_final.model.dto.UserDTO;
+import be.bruxellesformation.bf_projet_final.security.dto.UserDTO;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserRegisterForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
-import be.bruxellesformation.bf_projet_final.service.UserService;
+import be.bruxellesformation.bf_projet_final.security.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

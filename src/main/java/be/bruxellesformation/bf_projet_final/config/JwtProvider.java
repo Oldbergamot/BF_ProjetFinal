@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.config;
 
-import be.bruxellesformation.bf_projet_final.model.entity.User;
+import be.bruxellesformation.bf_projet_final.security.entity.User;
 import be.bruxellesformation.bf_projet_final.util.JwtProperties;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;

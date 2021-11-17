@@ -1,4 +1,4 @@
-package be.bruxellesformation.bf_projet_final.model.dto;
+package be.bruxellesformation.bf_projet_final.security.dto;
 
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import lombok.AllArgsConstructor;

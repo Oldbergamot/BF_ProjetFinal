@@ -1,28 +1,29 @@
-package be.bruxellesformation.bf_projet_final.service.impl;
+package be.bruxellesformation.bf_projet_final.security.service.impl;
 
 import be.bruxellesformation.bf_projet_final.exception.model.BookNotFoundException;
 import be.bruxellesformation.bf_projet_final.exception.model.PreferenceNotCompletedException;
 import be.bruxellesformation.bf_projet_final.exception.model.UserNotFoundException;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
-import be.bruxellesformation.bf_projet_final.mapper.UserMapper;
+import be.bruxellesformation.bf_projet_final.security.mapper.UserMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
-import be.bruxellesformation.bf_projet_final.model.dto.UserDTO;
+import be.bruxellesformation.bf_projet_final.security.dto.UserDTO;
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserRegisterForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import be.bruxellesformation.bf_projet_final.repository.BookRepository;
-import be.bruxellesformation.bf_projet_final.repository.UserRepository;
-import be.bruxellesformation.bf_projet_final.service.UserService;
+import be.bruxellesformation.bf_projet_final.security.entity.User;
+import be.bruxellesformation.bf_projet_final.security.repository.UserRepository;
+import be.bruxellesformation.bf_projet_final.security.service.UserService;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,11 +35,14 @@ public class UserServiceImpl implements UserService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    public UserServiceImpl(UserRepository repository, UserMapper mapper, BookRepository bookRepository, BookMapper bookMapper) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository repository, UserMapper mapper, BookRepository bookRepository, BookMapper bookMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = repository;
         this.userMapper = mapper;
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -76,7 +80,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO deleteOne(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        u.setDisplay(false);
+//        u.setDisplay(false);
+        u.setAccountExpired(true);
+        u.setAccountLocked(true);
         userRepository.save(u);
         return userMapper.toDto(u);
     }
@@ -84,7 +90,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO displayOne(Long id, boolean b) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        u.setDisplay(b);
+        //u.setDisplay(b);
+        u.setAccountExpired(true);
+        u.setAccountLocked(true);
         userRepository.save(u);
         return userMapper.toDto(u);
     }
@@ -343,4 +351,14 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toDto(user);
     }
+
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return this.userRepository.save(user);
+    }
+
+    public Collection<User> bulkCreate(Collection<User> users) {
+        return this.userRepository.saveAll(users);
+    }
+
 }

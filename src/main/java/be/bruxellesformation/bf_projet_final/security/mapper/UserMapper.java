@@ -1,14 +1,15 @@
-package be.bruxellesformation.bf_projet_final.mapper;
+package be.bruxellesformation.bf_projet_final.security.mapper;
 
-import be.bruxellesformation.bf_projet_final.model.dto.UserDTO;
-import be.bruxellesformation.bf_projet_final.model.entity.User;
+import be.bruxellesformation.bf_projet_final.mapper.BaseMapper;
+import be.bruxellesformation.bf_projet_final.security.dto.UserDTO;
+import be.bruxellesformation.bf_projet_final.security.entity.User;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserRegisterForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserMapper implements BaseMapper<UserDTO, UserRegisterForm, User>{
+public class UserMapper implements BaseMapper<UserDTO, UserRegisterForm, User> {
 
     public UserDTO toDto(User entity){
         if (entity == null) return null;
@@ -68,5 +69,12 @@ public class UserMapper implements BaseMapper<UserDTO, UserRegisterForm, User>{
         user.setPassword(form.getPassword());
         user.setEmail(form.getEmail());
         return user;
+    }
+
+    public UserDTO fromEntity(User entity) {
+        return UserDTO.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .build();
     }
 }
