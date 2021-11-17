@@ -1,46 +1,46 @@
-//package be.bruxellesformation.bf_projet_final.util;
-//
-//
-//import be.bruxellesformation.bf_projet_final.model.entity.*;
-//import be.bruxellesformation.bf_projet_final.repository.*;
-//import be.bruxellesformation.bf_projet_final.security.entity.User;
-//import be.bruxellesformation.bf_projet_final.security.repository.UserRepository;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.InitializingBean;
-//import org.springframework.stereotype.Component;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@Component
-//public class DataFiller implements InitializingBean {
-//
-//    private final Logger log = LoggerFactory.getLogger(DataFiller.class);
-//    private final UserRepository userRepository;
-//    private final AuthorRepository authorRepository;
-//    private final BookRepository bookRepository;
-//    private final GenreRepository genreRepository;
-//    private final LanguageRepository languageRepository;
-//    private final PublisherRepository publisherRepository;
-//    private final ReviewReposiroty reviewReposiroty;
-//
-//    public DataFiller(UserRepository userRepository, AuthorRepository authorRepository, BookRepository bookRepository, GenreRepository genreRepository, LanguageRepository languageRepository, PublisherRepository publisherRepository, ReviewReposiroty reviewReposiroty, UserRepository userRepository1) {
-//        this.userRepository = userRepository;
-//        this.authorRepository = authorRepository;
-//        this.bookRepository = bookRepository;
-//        this.genreRepository = genreRepository;
-//        this.languageRepository = languageRepository;
-//        this.publisherRepository = publisherRepository;
-//        this.reviewReposiroty = reviewReposiroty;
-//    }
-//
-//    @Override
-//    public void afterPropertiesSet() throws Exception {
-//        if (userRepository.findAll().size() > 0) {
-//            log.info("No insert data is required");
-//            return;
-//        }
+package be.bruxellesformation.bf_projet_final.util;
+
+
+import be.bruxellesformation.bf_projet_final.model.entity.*;
+import be.bruxellesformation.bf_projet_final.repository.*;
+import be.bruxellesformation.bf_projet_final.security.entity.User;
+import be.bruxellesformation.bf_projet_final.security.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Component
+public class DataFiller implements InitializingBean {
+
+    private final Logger log = LoggerFactory.getLogger(DataFiller.class);
+    private final UserRepository userRepository;
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    private final LanguageRepository languageRepository;
+    private final PublisherRepository publisherRepository;
+    private final ReviewReposiroty reviewReposiroty;
+
+    public DataFiller(UserRepository userRepository, AuthorRepository authorRepository, BookRepository bookRepository, GenreRepository genreRepository, LanguageRepository languageRepository, PublisherRepository publisherRepository, ReviewReposiroty reviewReposiroty, UserRepository userRepository1) {
+        this.userRepository = userRepository;
+        this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
+        this.languageRepository = languageRepository;
+        this.publisherRepository = publisherRepository;
+        this.reviewReposiroty = reviewReposiroty;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (userRepository.findAll().size() > 0) {
+            log.info("No insert data is required");
+            return;
+        }
 //
 //        log.info("hydratation de la DB");
 //
@@ -193,5 +193,5 @@
 //
 //        reviewReposiroty.saveAll(reviewToInsert);
 //
-//    }
-//}
+    }
+}
