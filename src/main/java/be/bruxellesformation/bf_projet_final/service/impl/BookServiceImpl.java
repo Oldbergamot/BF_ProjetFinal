@@ -1,6 +1,6 @@
 package be.bruxellesformation.bf_projet_final.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exception.model.BookNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.*;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
 import be.bruxellesformation.bf_projet_final.mapper.ReviewMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
@@ -12,6 +12,8 @@ import be.bruxellesformation.bf_projet_final.repository.*;
 import be.bruxellesformation.bf_projet_final.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,8 +33,9 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
     private final AuthorRepository authorRepository;
     private final LanguageRepository languageRepository;
+    private final PublisherRepository publisherRepository;
 
-    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, ReviewReposiroty reviewReposiroty, GenreRepository genreRepository, AuthorRepository authorRepository, LanguageRepository languageRepository) {
+    public BookServiceImpl(BookMapper bookMapper, ReviewMapper reviewMapper, BookRepository bookRepository, ReviewReposiroty reviewReposiroty, GenreRepository genreRepository, AuthorRepository authorRepository, LanguageRepository languageRepository, PublisherRepository publisherRepository) {
         this.bookMapper = bookMapper;
         this.reviewMapper = reviewMapper;
         this.bookRepository = bookRepository;
@@ -40,22 +43,21 @@ public class BookServiceImpl implements BookService {
         this.genreRepository = genreRepository;
         this.authorRepository = authorRepository;
         this.languageRepository = languageRepository;
+        this.publisherRepository = publisherRepository;
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public BookDTO insertOne(AddBookForm form) {
         Book book = bookMapper.fromFormToEntity(form);
-//        book.setGgenreRepository.save(book.getGenre());
 
         Optional<Genre> optGenre = genreRepository.findById(form.getGenre().getId());
         optGenre.ifPresentOrElse(book::setGenre, () -> book.setGenre(genreRepository.save(form.getGenre())));
 
-//        languageRepository.save(book.getLanguage());
 
         Optional<Language> optLang = languageRepository.findById(form.getLanguage().getId());
         optLang.ifPresentOrElse(book::setLanguage, () -> book.setLanguage(languageRepository.save(form.getLanguage())));
 
-//        authorRepository.saveAll(book.getAuthors());
         List <Author> authorList = new ArrayList<>();
 
         for (int i = 0 ; i < form.getAuthors().size() ; i++) {
@@ -73,14 +75,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public BookDTO getOne(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+
+        if(!book.isDisplay() && !isRoleAdmin())throw new BookNotFoundException(id);
+
         return bookMapper.toDto(book);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public BookDTO modifyOne(Long id, ModifyBookForm form) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+
+        if(!book.isDisplay() && !isRoleAdmin())throw new BookNotFoundException(id);
+
         book.setSummary(form.getSummary());
         book.setName(form.getName());
         book.setPublishedDate(form.getPublishedDate());
@@ -92,57 +102,124 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getOneByName(String name) {
-        List<Book> books = bookRepository.findBooksByName(name);
-        return bookMapper.fromListEntityToDto(books);
-    }
-
-    @Override
-    public List<BookDTO> getAllByGenre(Long idGenre) {
-        List<Book> books = bookRepository.findBooksByGenreId(idGenre);
-        return bookMapper.fromListEntityToDto(books);
-    }
-
-    @Override
-    public List<BookDTO> getAllByAuthor(Long idAuthor) {
-        List<Book> books = bookRepository.findBooksByAuthorsIn(idAuthor);
-        return books.stream()
+        if(isRoleAdmin()) return bookRepository.findBooksByName(name)
+                                        .stream()
+                                        .map(bookMapper::toDto)
+                                        .collect(Collectors.toList());
+        return bookRepository.findBooksByNameAndDisplay(name)
+                .stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<BookDTO> getAllByGenre(Long idGenre) {
+        if(isRoleAdmin()) return bookRepository.findBooksByGenreId(idGenre)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
+        if(!genreRepository.getById(idGenre).isDisplay()) throw new GenreNotFoundException(idGenre);
+
+        return bookRepository.findBooksByGenreIdAndDisplay(idGenre)
+                        .stream()
+                        .map(bookMapper::toDto)
+                        .collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<BookDTO> getAllByAuthor(Long idAuthor) {
+
+        if(isRoleAdmin()) return bookRepository.findBooksByAuthorsIn(idAuthor)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
+        if(!authorRepository.getById(idAuthor).isDisplay()) throw new AuthorNotFoundException(idAuthor);
+        List<Book> books = bookRepository.findBooksByAuthorsIn(idAuthor);
+        return bookRepository.findBooksByGenreIdAndDisplay(idAuthor)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getAllByPublisher(Long idPublisher) {
-        List<Book>books = bookRepository.findBooksByPublisherId(idPublisher);
-        return bookMapper.fromListEntityToDto(books);
+
+        if(isRoleAdmin()) return bookRepository.
+                findBooksByPublisherId(idPublisher)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
+        if(!publisherRepository.getById(idPublisher).isDisplay()) throw new PublisherNotFoundException(idPublisher);
+
+        return bookRepository.findBooksByPublisherIdAndDisplay(idPublisher)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getAllByLanguage(Long idLanguage) {
-        List<Book>results = bookRepository.findBooksByLanguageId(idLanguage);
-        return bookMapper.fromListEntityToDto(results);
+
+        if(isRoleAdmin()) return bookRepository.findBooksByLanguageId(idLanguage)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
+        if(!languageRepository.getById(idLanguage).isDisplay()) throw new LanguageNotFoundException(idLanguage);
+
+        return bookRepository.findBooksByLanguageIdAndDisplay(idLanguage)
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<BookDTO> getAllByPublishedYear(int year) {
-//        List<Book> books = bookRepository.findBooksByPublishedDateYear(year);
-//        return bookMapper.fromListEntityToDto(books);
-//    }
-
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getAllByPublishedYear(int year) {
-        List<Book> books = bookRepository.findAll().stream().filter(b -> b.getPublishedDate()!=null).filter(b -> b.getPublishedDate().getYear() == year).collect(Collectors.toList());
-        return bookMapper.fromListEntityToDto(books);
+        if(isRoleAdmin())return bookRepository.findAll()
+                .stream()
+                .filter(b -> b.getPublishedDate()!=null)
+                .filter(b -> b.getPublishedDate().getYear() == year)
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+        return bookRepository.findAll()
+                .stream()
+                .filter(b -> b.getPublishedDate()!=null)
+                .filter(b -> b.getPublishedDate().getYear() == year)
+                .filter(Book::isDisplay)
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<ReviewDTO> getReviews(Long idBook) {
+
         Book book = bookRepository.findById(idBook).orElseThrow(()-> new BookNotFoundException(idBook));
-        List<Review> reviews = reviewReposiroty.findReviewsByIsAbout(book);
-        return reviewMapper.fromListEntityToDto(reviews);
+
+        if(isRoleAdmin())return reviewReposiroty.findReviewsByIsAbout(book)
+                .stream()
+                .map(reviewMapper::toDto)
+                .collect(Collectors.toList());
+
+        return reviewReposiroty.findReviewsByIsAboutAndDisplay(book)
+                .stream()
+                .map(reviewMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookDTO displayBook(Long id, boolean b) {
         Book book = bookRepository.findById(id).orElseThrow(()-> new BookNotFoundException(id));
         book.setDisplay(b);
@@ -151,18 +228,33 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getAll() {
-        List<Book> books = bookRepository.findAll();
-        return bookMapper.fromListEntityToDto(books);
+
+        if(isRoleAdmin()) return bookRepository.findAll()
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+
+        return bookRepository.findAllByDisplay()
+                .stream()
+                .map(bookMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getAllWithPagination(int page, int size) {
-        Page<Book> result = bookRepository.findAll(PageRequest.of(page, size));
+        if(isRoleAdmin()) {
+            Page<Book> result = bookRepository.findAll(PageRequest.of(page, size));
+            return result.map(bookMapper::toDto);
+        }
+        Page<Book> result = bookRepository.findAllByDisplay(PageRequest.of(page, size));
         return result.map(bookMapper::toDto);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public BookDTO partialUpdate(Long id, Map<String, Object> values) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
 
@@ -205,5 +297,9 @@ public class BookServiceImpl implements BookService {
         }
         bookRepository.save(book);
         return bookMapper.toDto(book);
+    }
+
+    private boolean isRoleAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));
     }
 }

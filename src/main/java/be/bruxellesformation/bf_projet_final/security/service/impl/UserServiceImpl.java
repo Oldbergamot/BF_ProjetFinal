@@ -1,8 +1,6 @@
 package be.bruxellesformation.bf_projet_final.security.service.impl;
 
-import be.bruxellesformation.bf_projet_final.exception.model.BookNotFoundException;
-import be.bruxellesformation.bf_projet_final.exception.model.PreferenceNotCompletedException;
-import be.bruxellesformation.bf_projet_final.exception.model.UserNotFoundException;
+import be.bruxellesformation.bf_projet_final.exception.model.*;
 import be.bruxellesformation.bf_projet_final.mapper.BookMapper;
 import be.bruxellesformation.bf_projet_final.security.mapper.UserMapper;
 import be.bruxellesformation.bf_projet_final.model.dto.BookDTO;
@@ -20,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,18 +48,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO insert(UserRegisterForm form) {
         User u = userMapper.fromFormToEntity(form);
+        u.setPassword(passwordEncoder.encode(u.getPassword()));
         userRepository.save(u);
         return userMapper.toDto(u);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO getOne(Long id) {
        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+       if((!u.isAccountNonExpired() || !u.isAccountNonLocked()) && !isRoleAdmin()) throw new AuthorisationException(id);
        return userMapper.toDto(u);
     }
 
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDTO> getAll() {
         return userRepository.findAll()
                 .stream()
@@ -68,8 +72,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO updateOne(Long id, UserUpdateForm form) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if((!u.isAccountNonExpired() || !u.isAccountNonLocked()) && !isRoleAdmin()) throw new AuthorisationException(id);
         u.setEmail(form.getEmail());
         u.setUsername(form.getUsername());
         u.setPassword(form.getPassword());
@@ -77,20 +83,20 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(u);
     }
 
-    @Override
-    public UserDTO deleteOne(Long id) {
-        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-//        u.setDisplay(false);
-        u.setAccountExpired(true);
-        u.setAccountLocked(true);
-        userRepository.save(u);
-        return userMapper.toDto(u);
-    }
+
+//    public UserDTO deleteOne(Long id) {
+//        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+////        u.setDisplay(false);
+//        u.setAccountExpired(true);
+//        u.setAccountLocked(true);
+//        userRepository.save(u);
+//        return userMapper.toDto(u);
+//    }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserDTO displayOne(Long id, boolean b) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        //u.setDisplay(b);
         u.setAccountExpired(true);
         u.setAccountLocked(true);
         userRepository.save(u);
@@ -98,8 +104,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserDTO setAccountExpired(Long id, boolean b) {
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        u.setAccountExpired(b);
+        userRepository.save(u);
+        return userMapper.toDto(u);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserDTO setAccountLocked(Long id, boolean b) {
+        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        u.setAccountLocked(b);
+        userRepository.save(u);
+        return userMapper.toDto(u);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO updatePref(Long id, UserAddPrefForm form) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+
         u.setPrefPub(form.getPrefPub());
         u.setPrefLang(form.getPrefLang());
         u.setPrefGenre(form.getPrefGenre());
@@ -109,8 +136,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO addToWishToRead(Long idUser, Long idBook) {
         User u = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        if (!u.isAccountNonLocked() || !u.isAccountNonExpired()) throw new ModificationException(idUser);
         Book book = bookRepository.findById(idBook).orElseThrow(()-> new BookNotFoundException(idBook));
         List<Book> books = u.getWishToRead();
         books.add(book);
@@ -120,8 +149,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO addToHasRead(Long idUser, Long idBook) {
         User u = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        if (!u.isAccountNonLocked() || !u.isAccountNonExpired()) throw new ModificationException(idUser);
         Book book = bookRepository.findById(idBook).orElseThrow(()-> new BookNotFoundException(idBook));
         List<Book> books = u.getHasRead();
         books.add(book);
@@ -131,8 +162,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO removeFromWishToRead(Long idUser, Long idBook) {
         User u = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        if (!isAccountActive(u)) throw new ModificationException(idUser);
         Book b = bookRepository.findById(idBook).orElseThrow(() -> new BookNotFoundException(idBook));
 
         List<Book> books = u.getWishToRead();
@@ -144,8 +177,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO removeFromHasRead(Long idUser, Long idBook) {
         User u = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        if (!isAccountActive(u)) throw new ModificationException(idUser);
         Book b = bookRepository.findById(idBook).orElseThrow(() -> new BookNotFoundException(idBook));
 
         List<Book> books = u.getHasRead();
@@ -157,6 +192,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<BookDTO> getGlobalRecommandation(Long id) {
         List<BookDTO> books = new ArrayList<>();
 
@@ -169,9 +205,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getRecommandationOnGenre(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+        if(!isAccountActive(u)) throw new AuthorisationException(id);
         List<Long> genresId = u.getPrefGenre()
                 .stream()
                 .map(Genre::getId)
@@ -182,23 +219,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getRecommandationOnAuthor(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+        if(!isAccountActive(u)) throw new AuthorisationException(id);
         List<Long> authorsId = u.getPrefAuthor()
                 .stream()
                 .map(Author::getId)
                 .collect(Collectors.toList());
         if(authorsId.size() == 0 ) throw new PreferenceNotCompletedException();
-//        List<Book> results = bookRepository.findBooksByAuthorsIn(authorsId);
         List<Book> results = bookRepository.findBooksByAuthorsIdIn(authorsId);
         return bookMapper.fromListEntityToDto(results);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getRecommandationOnPublisher(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+        if(!isAccountActive(u)) throw new AuthorisationException(id);
         List<Long> publisherId = u.getPrefPub()
                 .stream()
                 .map(Publisher::getId)
@@ -209,9 +247,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<BookDTO> getRecommandationOnLanguage(Long id) {
         User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-
+        if(!isAccountActive(u)) throw new AuthorisationException(id);
         List<Long> languagesId = u.getPrefGenre()
                 .stream()
                 .map(Genre::getId)
@@ -222,14 +261,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<UserDTO> getAllWithPagination(int page, int size) {
         Page<User>results = userRepository.findAll(PageRequest.of(page, size));
         return results.map(userMapper::toDto);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getGlobalRecommandationWithPagination(Long id,int page, int size) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        if(!isAccountActive(user)) throw new AuthorisationException(id);
         List<Long> genresId = user.getPrefGenre()
                 .stream()
                 .map(Genre::getId)
@@ -250,8 +292,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getRecommandationOnGenreWithPagination(Long id, int page, int size) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        if(!isAccountActive(user)) throw new AuthorisationException(id);
         List<Long> genresId = user.getPrefGenre()
                 .stream()
                 .map(Genre::getId)
@@ -262,8 +306,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getRecommandationOnAuthorWithPaginationr(Long id,int page, int size) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+        if(!isAccountActive(user)) throw new AuthorisationException(id);
         List<Long> authorsId = user.getPrefAuthor()
                 .stream()
                 .map(Author::getId)
@@ -274,8 +320,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getRecommandationOnPublisherWithPagination(Long id,int page, int size) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+
         List<Long> publishersId = user.getPrefGenre()
                 .stream()
                 .map(Genre::getId)
@@ -286,6 +334,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Page<BookDTO> getRecommandationOnLanguageWithPagination(Long id,int page, int size) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
         List<Long> languagesId = user.getPrefLang()
@@ -298,6 +347,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO partialUpdate(Long id, Map<String, Object> values) {
         User user = userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
 
@@ -318,7 +368,7 @@ public class UserServiceImpl implements UserService {
                     String password = (String) values.get(s);
                     if (password == null || password.isBlank())
                         throw new IllegalArgumentException("Invalid value for password");
-                    user.setPassword(password);
+                    user.setPassword(passwordEncoder.encode(password));
                     break;
                 case "wishToRead":
                     List<Book> wishToRead = (List<Book>) values.get(s);
@@ -352,13 +402,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
-    public User create(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return this.userRepository.save(user);
+    private boolean isRoleAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));
     }
 
-    public Collection<User> bulkCreate(Collection<User> users) {
-        return this.userRepository.saveAll(users);
+    private boolean isAccountActive(User u) {
+        if(!u.isAccountNonExpired() || !u.isAccountNonLocked()) throw new ModificationException(u.getId());
+        return true;
     }
 
 }

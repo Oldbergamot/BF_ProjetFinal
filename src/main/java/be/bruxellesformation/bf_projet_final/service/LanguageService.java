@@ -19,6 +19,5 @@ public interface LanguageService {
 
     List<LanguageDTO> getAll();
     Page<LanguageDTO> getAllWithPagination(int page, int size);
-    LanguageDTO partialUpdate(Long id, Map<String, Object> values);
 
 }

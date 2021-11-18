@@ -18,5 +18,4 @@ public interface PublisherService {
 
     List<PublisherDTO> getAll();
     Page<PublisherDTO> getAllWithPagination(int page, int size);
-    PublisherDTO partialUpdate(Long id, Map<String, Object> values);
 }

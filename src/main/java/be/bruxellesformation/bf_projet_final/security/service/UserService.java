@@ -18,7 +18,6 @@ public interface UserService {
     UserDTO getOne(Long id);
     List<UserDTO> getAll();
     UserDTO updateOne(Long id, UserUpdateForm form);
-    UserDTO deleteOne(Long id);
     UserDTO displayOne(Long id, boolean b);
     UserDTO updatePref(Long id, UserAddPrefForm form);
     UserDTO addToWishToRead(Long idUser, Long idBook);
@@ -30,6 +29,8 @@ public interface UserService {
     List<BookDTO> getRecommandationOnAuthor(Long id);
     List<BookDTO> getRecommandationOnPublisher(Long id);
     List<BookDTO> getRecommandationOnLanguage(Long id);
+    UserDTO setAccountExpired(Long id, boolean b);
+    UserDTO setAccountLocked(Long id, boolean b);
 
 
     Page<UserDTO> getAllWithPagination(int page, int size);

@@ -61,4 +61,8 @@ public class Review {
     public int hashCode() {
         return Objects.hash(id, note, content, publishedDate, display, isAbout);
     }
+
+    public boolean isDisplay() {
+        return this.display;
+    }
 }
