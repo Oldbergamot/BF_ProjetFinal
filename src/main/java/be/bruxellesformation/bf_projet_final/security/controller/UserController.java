@@ -5,6 +5,7 @@ import be.bruxellesformation.bf_projet_final.security.dto.UserDTO;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserAddPrefForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserRegisterForm;
 import be.bruxellesformation.bf_projet_final.model.form.user.UserUpdateForm;
+import be.bruxellesformation.bf_projet_final.security.entity.User;
 import be.bruxellesformation.bf_projet_final.security.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class UserController {
     public ResponseEntity<UserDTO>insert(@Valid @RequestBody UserRegisterForm form) {
         return ResponseEntity.ok(service.insert(form));
     }
+
 
     @GetMapping("/{user}")
     @PreAuthorize("hasRole('ROLE_USER')")

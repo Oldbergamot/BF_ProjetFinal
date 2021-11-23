@@ -3,6 +3,7 @@ package be.bruxellesformation.bf_projet_final.security.entity;
 import be.bruxellesformation.bf_projet_final.model.entity.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,4 +153,10 @@ public class User {
     public boolean isCredentialsNonExpired() {
         return !this.isCredentialsExpired;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
