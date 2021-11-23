@@ -27,7 +27,7 @@ public class BookMapper implements BaseMapper <BookDTO, AddBookForm, Book>{
                 .name(entity.getName())
                 .publishedDate(entity.getPublishedDate())
                 .summary(entity.getSummary())
-                .authors(this.authorMapper.toDtos(entity.getAuthors()).collect(Collectors.toList()))
+                .authors(this.authorMapper.toSimpleDtos(entity.getAuthors()).collect(Collectors.toList()))
                 .language(entity.getLanguage())
                 .genre(entity.getGenre())
                 .build();

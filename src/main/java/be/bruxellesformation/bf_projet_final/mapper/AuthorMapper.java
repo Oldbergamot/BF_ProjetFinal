@@ -36,10 +36,22 @@ public class AuthorMapper implements BaseMapper <AuthorDTO, AddAuthorForm,Author
                 .build();
     }
 
+    public AuthorDTO toSimpleDto(Author entity) {
+        if(entity == null) return null;
+        return AuthorDTO.builder()
+                .biography(entity.getBiography())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .build();
+    }
+
 
 
     public Stream<AuthorDTO> toDtos(Collection<Author> entities) {
         return entities.stream().map(this::toDto);
+    }
+    public Stream<AuthorDTO> toSimpleDtos(Collection<Author> entities) {
+        return entities.stream().map(this::toSimpleDto);
     }
 
     public Author fromFormToEntity(AddAuthorForm form) {

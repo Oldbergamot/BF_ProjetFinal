@@ -26,6 +26,18 @@ public class UserMapper implements BaseMapper<UserDTO, UserRegisterForm, User> {
                 .build();
     }
 
+    public UserDTO toUserDto(User entity) {
+        if (entity == null) return null;
+        return UserDTO.builder()
+                .username(entity.getUsername())
+                .wishToRead(entity.getWishToRead())
+                .hasRead(entity.getHasRead())
+                .prefLang(entity.getPrefLang())
+                .prefPub(entity.getPrefPub())
+                .prefAuthor(entity.getPrefAuthor())
+                .prefGenre(entity.getPrefGenre())
+                .build();
+    }
     public User toEntity(UserDTO dto) {
         if (dto == null) return null;
 

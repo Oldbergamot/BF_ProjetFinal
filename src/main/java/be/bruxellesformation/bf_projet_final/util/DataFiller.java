@@ -110,17 +110,18 @@ public class DataFiller implements InitializingBean {
         Role userRole = new Role();
         Role adminRole = new Role();
         Role moderatorRole = new Role();
+
         userRole.setLabel("ROLE_USER");
-        adminRole.setLabel("ADMIN_ROLE");
-        moderatorRole.setLabel("MODERATOR_ROLE");
+        adminRole.setLabel("ROLE_ADMIN");
+        moderatorRole.setLabel("ROLE_MODERATOR");
 
         Group admin = new Group();
         Group user = new Group();
         Group moderator = new Group();
 
-        admin.setLabel("ADMIN_GROUP");
-        user.setLabel("USER_GROUP");
-        moderator.setLabel("MODERATOR_GROUP");
+        admin.setLabel("GROUP_ADMIN");
+        user.setLabel("GROUP_USER");
+        moderator.setLabel("GROUP_MODERATOR");
 
         user.setRoles(Set.of(userRole));
         moderator.setRoles(Set.of(moderatorRole, userRole));

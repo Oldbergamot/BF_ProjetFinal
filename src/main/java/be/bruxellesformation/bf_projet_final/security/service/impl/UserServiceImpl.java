@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getOne(Long id) {
        User u = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
        if((!u.isAccountNonExpired() || !u.isAccountNonLocked()) && !isRoleAdmin()) throw new AuthorisationException(id);
-       return userMapper.toDto(u);
+       return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             u.setPassword(form.getPassword());
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
 
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
             u.setPrefAuthor(form.getPrefAuthor());
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
             u.setWishToRead(books);
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
             u.setHasRead(books);
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
             u.setWishToRead(books);
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class UserServiceImpl implements UserService {
             u.setHasRead(books);
             userRepository.save(u);
         }
-        return userMapper.toDto(u);
+        return isRoleAdmin()? userMapper.toDto(u) : userMapper.toUserDto(u);
     }
 
     @Override

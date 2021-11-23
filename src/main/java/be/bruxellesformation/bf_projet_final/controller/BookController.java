@@ -112,5 +112,5 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity <Page<BookDTO>> getAllWithPagination(@PathVariable(value = "page") int page,@PathVariable (value = "size") int size){
         return  ResponseEntity.ok(service.getAllWithPagination(page,size));
-    };
+    }
 }

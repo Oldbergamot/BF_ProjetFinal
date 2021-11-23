@@ -113,15 +113,15 @@ public class UserController {
         return ResponseEntity.ok(service.getRecommandationOnLanguage(id));
     }
 
-    @GetMapping("/{user}/recommandation")
+    @GetMapping("/{user}/recommandation/page={page}&size={size}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<BookDTO>>getGlobalRecommandationWithPagination(@PathVariable(value="user") Long id,
-                                                                              @RequestParam(value="page", defaultValue = "0") int page,
-                                                                              @RequestParam(value="size", defaultValue = "10") int size){
+                                                                              @PathVariable(value="page") int page,
+                                                                              @PathVariable(value="size") int size){
         return ResponseEntity.ok(service.getGlobalRecommandationWithPagination(id,page,size));
     }
 
-    @GetMapping("/{user}/recommandation/genre?page={page}&size={size}")
+    @GetMapping("/{user}/recommandation/genre/page={page}&size={size}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<BookDTO>>getRecommandationOnGenreWithPagination(@PathVariable(value="user") Long id,
                                                                                @PathVariable(value="page") int page,
@@ -129,7 +129,7 @@ public class UserController {
         return ResponseEntity.ok(service.getRecommandationOnGenreWithPagination(id, page, size));
     }
 
-    @GetMapping("/{user}/recommandation/author?page={page}&size={size}")
+    @GetMapping("/{user}/recommandation/author/page={page}&size={size}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<BookDTO>>getRecommandationOnAuthorWithPaginationr(@PathVariable(value="user") Long id,
                                                                                  @PathVariable(value="page") int page,
@@ -137,7 +137,7 @@ public class UserController {
         return ResponseEntity.ok(service.getRecommandationOnAuthorWithPaginationr(id,page,size));
     }
 
-    @GetMapping(path = {"/{user}/recommandation/publisher?page={page}&size={size}"})
+    @GetMapping(path = {"/{user}/recommandation/publisher/page={page}&size={size}"})
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<BookDTO>> getRecommandationOnPublisherWithPagination(@PathVariable(value="user") Long id,
                                                                                    @PathVariable(value="page") int page,
@@ -145,7 +145,7 @@ public class UserController {
         return ResponseEntity.ok(service.getRecommandationOnPublisherWithPagination(id,page,size));
     }
 
-    @GetMapping("/{user}/recommandation/language?page={page}&size={size}")
+    @GetMapping("/{user}/recommandation/language/page={page}&size={size}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<BookDTO>>getRecommandationOnLanguageWithPagination(@PathVariable(value="user") Long id,
                                                                                   @PathVariable(value="page") int page,
