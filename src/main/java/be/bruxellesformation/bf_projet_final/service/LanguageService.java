@@ -20,4 +20,5 @@ public interface LanguageService {
     List<LanguageDTO> getAll();
     Page<LanguageDTO> getAllWithPagination(int page, int size);
 
+    LanguageDTO deleteLanguage(Long id);
 }

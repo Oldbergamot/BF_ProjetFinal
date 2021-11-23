@@ -135,6 +135,14 @@ public class ReviewServiceImpl implements ReviewService {
         return mapper.toDto(r);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ReviewDTO deleteReview(Long id) {
+        Review toRemove = repository.findById(id).orElseThrow(() -> new ReviewNotFoundException(id));
+        repository.delete(toRemove);
+        return mapper.toDto(toRemove);
+    }
+
     private boolean isRoleAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));
     }

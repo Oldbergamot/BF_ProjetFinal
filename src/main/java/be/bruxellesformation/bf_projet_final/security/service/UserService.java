@@ -40,4 +40,6 @@ public interface UserService {
     Page<BookDTO> getRecommandationOnLanguageWithPagination(Long id,int page, int size);
     Page<BookDTO> getGlobalRecommandationWithPagination(Long id,int page, int size);
     UserDTO partialUpdate(Long id, Map<String, Object> values);
+
+    UserDTO deleteUser(Long id);
 }

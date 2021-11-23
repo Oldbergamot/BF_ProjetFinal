@@ -92,6 +92,14 @@ public class PublisherServiceImpl implements PublisherService {
         return result.map(mapper::toDto);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public PublisherDTO deletePublisher(Long id) {
+        Publisher toRemove = repository.findById(id).orElseThrow(() -> new PublisherNotFoundException(id));
+        repository.delete(toRemove);
+        return mapper.toDto(toRemove);
+    }
+
 
     private boolean isRoleAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));

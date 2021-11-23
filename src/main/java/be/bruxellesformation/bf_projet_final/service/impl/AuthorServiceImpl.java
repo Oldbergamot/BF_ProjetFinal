@@ -140,6 +140,14 @@ public class AuthorServiceImpl implements AuthorService {
 
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public AuthorDTO deleteAuthor(Long id) {
+        Author toRemove = repository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
+        repository.delete(toRemove);
+        return mapper.toDto(toRemove);
+    }
+
     private boolean isRoleUser() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_USER"));
     }

@@ -39,9 +39,15 @@ public class GenreController {
     }
 
     @PutMapping("/{genre}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<GenreDTO>displayGenre(@PathVariable(value = "genre") Long id, @PathVariable(value = "display") boolean b){
         return ResponseEntity.ok(service.displayGenre(id, b));
+    }
+
+    @DeleteMapping("/{genre}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<GenreDTO>deleteGenre(@PathVariable(value = "genre") Long id){
+        return ResponseEntity.ok(service.deleteGenre(id));
     }
 
 

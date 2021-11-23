@@ -20,4 +20,5 @@ public interface AuthorService {
     Page<AuthorDTO>getAllWithPagination(int page, int size);
     AuthorDTO partialUpdate(Long id, Map<String, Object> values);
 
+    AuthorDTO deleteAuthor(Long id);
 }

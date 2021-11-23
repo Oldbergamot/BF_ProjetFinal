@@ -8,4 +8,8 @@ public class AuthorisationException extends RuntimeException{
         super("Authorisation denied to access "+id);
         this.id = id;
     }
+
+    public AuthorisationException(String message){
+        super(message);
+    }
 }

@@ -26,4 +26,6 @@ public interface BookService {
     List<BookDTO>getAll();
     Page<BookDTO> getAllWithPagination(int page, int size);
     BookDTO partialUpdate(Long id, Map<String, Object> values);
+
+    BookDTO deleteBook(Long id);
 }

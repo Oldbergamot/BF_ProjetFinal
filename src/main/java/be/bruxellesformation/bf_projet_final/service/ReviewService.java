@@ -19,4 +19,6 @@ public interface ReviewService {
     List<ReviewDTO> getAll();
     Page<ReviewDTO> getAllWithPagination(int page, int size);
     ReviewDTO partialUpdate(Long id, Map<String, Object> values);
+
+    ReviewDTO deleteReview(Long id);
 }

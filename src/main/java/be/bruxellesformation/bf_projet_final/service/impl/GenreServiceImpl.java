@@ -91,6 +91,14 @@ public class GenreServiceImpl implements GenreService {
         return result.map(mapper::toDto);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public GenreDTO deleteGenre(Long id) {
+        Genre toRemove = repository.findById(id).orElseThrow(() -> new GenreNotFoundException(id));
+        repository.delete(toRemove);
+        return mapper.toDto(toRemove);
+    }
+
     private boolean isRoleAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));
     }

@@ -85,9 +85,15 @@ public class BookController {
     }
 
     @PatchMapping("/{book}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<BookDTO>displayBook(@PathVariable(value="book") Long id,@PathVariable(value="display") boolean b){
         return ResponseEntity.ok(service.displayBook(id,b));
+    }
+
+    @DeleteMapping("/{book}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<BookDTO>deleteBook(@PathVariable(value="book") Long id){
+        return ResponseEntity.ok(service.deleteBook(id));
     }
 
     @PatchMapping("{book}/update/partial")

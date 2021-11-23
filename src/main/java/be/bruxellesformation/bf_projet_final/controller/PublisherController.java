@@ -39,9 +39,15 @@ public class PublisherController {
     }
 
     @PutMapping("/{pub}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<PublisherDTO>displayPublisher(@PathVariable(value = "pub") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayPublisher(id, b));
+    }
+
+    @DeleteMapping("/{pub}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<PublisherDTO>deletePublisher(@PathVariable(value = "pub") Long id) {
+        return ResponseEntity.ok(service.deletePublisher(id));
     }
 
 

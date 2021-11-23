@@ -299,6 +299,14 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDto(book);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public BookDTO deleteBook(Long id) {
+        Book toRemove = bookRepository.findById(id).orElseThrow(()-> new BookNotFoundException(id));
+        bookRepository.delete(toRemove);
+        return bookMapper.toDto(toRemove);
+    }
+
     private boolean isRoleAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));
     }

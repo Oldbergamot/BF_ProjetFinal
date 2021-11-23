@@ -19,4 +19,6 @@ public interface GenreService {
 
     List<GenreDTO> getAll();
     Page<GenreDTO> getAllWithPagination(int page, int size);
+
+    GenreDTO deleteGenre(Long id);
 }

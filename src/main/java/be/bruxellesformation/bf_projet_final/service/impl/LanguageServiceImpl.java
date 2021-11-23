@@ -89,6 +89,14 @@ public class LanguageServiceImpl implements LanguageService {
         return result.map(mapper::toDto);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public LanguageDTO deleteLanguage(Long id) {
+        Language toRemove = repository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
+        repository.delete(toRemove);
+        return mapper.toDto(toRemove);
+    }
+
 
     private boolean isRoleAdmin() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(role -> role.equals("ROLE_ADMIN"));

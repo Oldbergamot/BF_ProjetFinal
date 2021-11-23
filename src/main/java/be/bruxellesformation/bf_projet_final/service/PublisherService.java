@@ -18,4 +18,6 @@ public interface PublisherService {
 
     List<PublisherDTO> getAll();
     Page<PublisherDTO> getAllWithPagination(int page, int size);
+
+    PublisherDTO deletePublisher(Long id);
 }

@@ -40,8 +40,14 @@ public class LanguageController {
     }
 
     @PutMapping("/{lang}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<LanguageDTO>displayLanguage(@PathVariable(value = "lang") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayLanguage(id, b));
+    }
+
+    @DeleteMapping("/{lang}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<LanguageDTO>deleteLanguage(@PathVariable(value = "lang") Long id) {
+        return ResponseEntity.ok(service.deleteLanguage(id));
     }
 }

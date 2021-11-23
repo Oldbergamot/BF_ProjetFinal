@@ -42,9 +42,15 @@ public class AuthorController {
     }
 
     @PatchMapping("/{author}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<AuthorDTO>displayOne(@PathVariable(value = "author") Long id, @PathVariable(value = "display") boolean b){
         return ResponseEntity.ok(service.displayAuthor(id, b));
+    }
+
+    @DeleteMapping("/{author}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<AuthorDTO>deleteAuthor(@PathVariable(value = "author") Long id){
+        return ResponseEntity.ok(service.deleteAuthor(id));
     }
 
     @PatchMapping("/{author}/update/partial")

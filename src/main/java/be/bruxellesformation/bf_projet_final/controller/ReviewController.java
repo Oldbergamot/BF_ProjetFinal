@@ -39,8 +39,14 @@ public class ReviewController {
     }
 
     @PutMapping("/{review}/display={display}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<ReviewDTO>displayReview(@PathVariable(value = "review") Long id, @PathVariable(value = "display") boolean b) {
         return ResponseEntity.ok(service.displayReview(id, b));
+    }
+
+    @DeleteMapping("/{review}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ReviewDTO>deleteReview(@PathVariable(value = "review") Long id) {
+        return ResponseEntity.ok(service.deleteReview(id));
     }
 }
